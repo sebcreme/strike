@@ -3,34 +3,56 @@
 
 
 !images = /public/images/mobile
-!colortheme = #5683D6
-!colorsecond = darken_percent(!colortheme, 30%)
-!colorbutton = darken_percent(!colortheme, 50%)
+!colortheme ||= #BBB0A6
+!colordark = darken_percent(!colortheme, 30%)
+!colorlight = lighten_percent(!colortheme, 50%)
 =iphone-header()
-    +fancy-gradient(!colortheme, !colorsecond)
+    +fancy-gradient(!colortheme, !colordark)
+    !height = 37px
     text-align: center
     font-family: Helvetica
     font-weight: bold
     color: white
     font-size: 15pt
-    padding: 6px 85px 0px 85px
+    line-height= !height
+    height= !height
+    padding: 0 85px
     border-bottom: 1px solid #2d3642
     +text-shadow(rgba(0, 0, 0, 0.6), 0px, -1px, 0px)
-    height: 30px
-    
-=iphone-right-button-position
+   
+
+=iphone-page
+    width: 320px
+    height: 460px
+    background: #fff
+    position: relative
+    +v-gradient(!colorlight, !colortheme)
+
+=iphone-top-button
     position: absolute
     right: auto
     bottom: auto
     margin-top: 0px
     top: 4px
+
+=iphone-right-button
+    +iphone-top-button
+    left: auto
+    right: 5px
+    
+=iphone-left-button
+    +iphone-top-button
     left: 5px
-=iphone-button()
-    +fancy-button(!colortheme)
-=iphone-back-button()
-    -webkit-mask-box-image= url(!images/bouton.png) 0 5 0 16 repeat stretch
-    +v-gradient(darken_percent(!colorsecond, 10%), red)
-    background-color= !colorbutton
+    right: auto
+
+=iphone-button(!color = !colortheme)
+    +fancy-button(!color)
+
+ 
+=iphone-back-button(!imagebase=!images+ /back_button, !pixels="0 4 0 11")
+    -webkit-mask-box-image= url(!imagebase+"_mask.png") !pixels repeat stretch
+    -webkit-border-image= url(!imagebase+".png") !pixels repeat stretch
+    +v-gradient(!colortheme, !colordark)
     font-family: Helvetica
     font-weight: bold
     font-size: 11px
@@ -40,8 +62,24 @@
     text-overflow: ellipsis
     overflow: hidden
     white-space: nowrap
-    height: 16px
+    height: 30px
     width: 54px
-    +iphone-right-button-position
-    padding: 7px 0
-    border-width: 0 5px 0 5px
+    line-height: 30px
+    border-width: 0 4px 0 11px
+    &.selected
+        -webkit-border-image= url(!imagebase+"_active.png") !pixels repeat stretch
+    &:active
+        -webkit-border-image= url(!imagebase+"_active.png") !pixels repeat stretch
+    -webkit-user-select: none
+        
+=iphone-forward-button
+    +iphone-back-button(!images + /forward_button, "0 11 0 4")
+    border-width: 0 11px 0 4px
+    
+#forfun
+=iphone-apple
+    font-size: 64pt
+    text-shadow: rgba(255, 255, 255, 0.5) 0 1px 1px, rgba(0,0,0, 0.5) 0 -1px 1px
+    margin: 100px auto
+    text-align: center
+    
