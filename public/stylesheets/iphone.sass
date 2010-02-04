@@ -1,0 +1,47 @@
+@import compass/reset
+@import fancy_buttons
+
+
+!images = /public/images/mobile
+!colortheme = #5683D6
+!colorsecond = darken_percent(!colortheme, 30%)
+!colorbutton = darken_percent(!colortheme, 50%)
+=iphone-header()
+    +fancy-gradient(!colortheme, !colorsecond)
+    text-align: center
+    font-family: Helvetica
+    font-weight: bold
+    color: white
+    font-size: 15pt
+    padding: 6px 85px 0px 85px
+    border-bottom: 1px solid #2d3642
+    +text-shadow(rgba(0, 0, 0, 0.6), 0px, -1px, 0px)
+    height: 30px
+    
+=iphone-right-button-position
+    position: absolute
+    right: auto
+    bottom: auto
+    margin-top: 0px
+    top: 4px
+    left: 5px
+=iphone-button()
+    +fancy-button(!colortheme)
+=iphone-back-button()
+    -webkit-mask-box-image= url(!images/bouton.png) 0 5 0 16 repeat stretch
+    +v-gradient(darken_percent(!colorsecond, 10%), red)
+    background-color= !colorbutton
+    font-family: Helvetica
+    font-weight: bold
+    font-size: 11px
+    color: rgb(255, 255, 255)
+    text-shadow: rgba(0, 0, 0, 0.6) 0px -1px 0px
+    text-align: center
+    text-overflow: ellipsis
+    overflow: hidden
+    white-space: nowrap
+    height: 16px
+    width: 54px
+    +iphone-right-button-position
+    padding: 7px 0
+    border-width: 0 5px 0 5px
