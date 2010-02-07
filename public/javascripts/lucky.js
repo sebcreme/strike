@@ -1,7 +1,10 @@
-
 // ~~~~~~~~~~~~~~~~~~~~ Utils
-var $ = function(id) {return document.getElementById(id);};
-var $$ = function(s) {return document.querySelectorAll(s);}
+// mini jquery
+window.$ = HTMLElement.prototype.$ = function(selector) {
+	var context=this==window?document:this,results=context.querySelectorAll(selector),isId=/^\#[a-zA-Z]*$/;
+	if (isId.test(selector) && results) return results[0]
+	else return results
+}
 var each = function(c) {
     for(var i=0; i<this.length; i++) {
     	c(this[i], i);
@@ -33,11 +36,84 @@ $removeClass = function(element, className) {
 }
 Element.prototype.width = function(){return window.getComputedStyle(this,"").getPropertyValue("width").replace('px','');}
 Element.prototype.height = function(){return window.getComputedStyle(this,"").getPropertyValue("height");}
+/* -----------------------------------------------
+ * Used in animation // TODO check validity
+ * -----------------------------------------------
+ */
+function css(prop, value)
+{
+	if (value)
+		this.style.setProperty(prop, value);
+	else
+		return window.getComputedStyle(this, null)[prop]
+}
+HTMLElement.prototype.css = css;
+
+$ajax = function(method, url, callback){
+    var error = method.error
+    var params = method.params
+    var async = method.async === undefined ? true : false
+    
+    if (!method instanceof String){
+         url = method.url
+        callback = method.success
+    }
+    if(!error) {
+        error = function(e){
+            console.log('ajax error !')
+            throw e
+        }
+    }
+    async = async ? async : false
+    var req = new XMLHttpRequest()
+    req.open(method, url, async)
+    req.setRequestHeader('Accept', 'text/json')
+    req.onreadystatechange = function(){
+        	if (this.readyState == 4 && this.status == 200){
+        	    try{
+        	        callback(eval('('+this.responseText+')'))
+        	    } catch (e){
+        	        console.log('cannot parse json because of '+e)
+        	        error(e)
+        	    }
+    	    }
+    	    if (this.readyState == 4 && this.status != 200){
+    	        error(e)
+    	    }
+    }
+    req.send()
+}
+/* -----------------------------------------------
+ * Micro Templating by John-Resig
+ * -----------------------------------------------
+ */
+var cache = {}
+tmpl = function tmpl(str, data)
+{
+	var fn = !/\W/.test(str) ?
+	cache[str] = cache[str] ||
+	tmpl(document.getElementById(str).innerHTML) :
+		new Function("obj",
+		"var p=[],print=function(){p.push.apply(p,arguments);};" +
+		"with(obj){p.push('" +
+		str
+		.replace(/[\r\t\n]/g, " ")
+		.split("<%").join("\t")
+		.replace(/((^|%>)[^\t]*)'/g, "$1\r")
+		.replace(/\t=(.*?)%>/g, "',$1,'")
+		.split("\t").join("');")
+		.split("%>").join("p.push('")
+		.split("\r").join("\\'")
+		+ "');}return p.join('');");
+	return data ? fn( data ) : fn;
+};
 
 onIphone = ("createTouch" in document)
 
-HTMLElement.prototype.on = function(eventtype, handler) {
-	this.addEventListener(eventtype, handler);
+HTMLElement.prototype.on = function(event, handler) {
+    if (event=='touchend' && !onIphone) event = 'mouseup';
+	if (event=='touchstart' && !onIphone) event = 'mousedown';
+	this.addEventListener(event, handler);
 }
 // ~~~~~~~~~~~~~~~~~~~~ ????
 if (onIphone) {

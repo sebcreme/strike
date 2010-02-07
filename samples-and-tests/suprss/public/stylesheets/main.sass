@@ -1,10 +1,24 @@
+!colortheme = #11E500
 @import iphone.sass
 
-!mauve=#D00497
 h1
     +iphone-header
-  
-.button
-    +iphone-button
-.backbutton
+
+.back-button
     +iphone-back-button
+    +iphone-left-button
+.forward-button
+    +iphone-forward-button
+    +iphone-right-button
+.apple
+    +iphone-apple
+.page
+    +iphone-page
+button
+    display: inline
+    &.yes
+        +iphone-button(green)
+    &.no
+        +iphone-button(red)
+    &.perhaps
+        +iphone-button(blue)

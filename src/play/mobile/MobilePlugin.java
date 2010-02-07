@@ -16,6 +16,7 @@ import play.mvc.Router;
  * @author sebastiencreme
  */
 public class MobilePlugin extends PlayPlugin{
+    public static Boolean inEmulator = false;
     @Override
     public void onRoutesLoaded() {
         if (Play.mode == Play.Mode.DEV) Router.prependRoute("GET", "/@emulator", "PlayMobile.emulator");
@@ -23,11 +24,6 @@ public class MobilePlugin extends PlayPlugin{
 
     @Override
     public void beforeActionInvocation(Method actionMethod) {
-        //check if we are deisplaying application for an iphone :
-        String userAgent = Request.current().headers.get("user-agent").toString();
-        if (userAgent!= null && userAgent.contains("iPhone") || userAgent.contains("iPod")){
-            
-        }
         super.beforeActionInvocation(actionMethod);
     }
 
