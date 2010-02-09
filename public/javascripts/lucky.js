@@ -60,7 +60,6 @@ $ajax = function(method, url, callback){
     }
     if(!error) {
         error = function(e){
-            console.log('ajax error !')
             throw e
         }
     }
@@ -71,7 +70,8 @@ $ajax = function(method, url, callback){
     req.onreadystatechange = function(){
         	if (this.readyState == 4 && this.status == 200){
         	    try{
-        	        callback(eval('('+this.responseText+')'))
+        	        if (this.responseXML) callback(this.responseXML)
+        	        else callback(eval('('+this.responseText+')'))
         	    } catch (e){
         	        console.log('cannot parse json because of '+e)
         	        error(e)

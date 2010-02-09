@@ -1,25 +1,43 @@
 @import compass/reset
 @import fancy_buttons
 
+#should work in compass but currently not
+=ellipsis(!no_wrap = true)
+    @if !no_wrap
+        white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+    -o-text-overflow: ellipsis
+    -ms-text-overflow: ellipsis
 
 !images = /public/images/mobile
 !colortheme ||= #BBB0A6
 !colordark = darken_percent(!colortheme, 30%)
 !colorlight = lighten_percent(!colortheme, 50%)
-=iphone-header()
-    +fancy-gradient(!colortheme, !colordark)
+
+body
+    font: 14px "Lucida Grande", sans-serif
+    
+=iphone-header(!colorheader = !colortheme, !fontsize = "15pt")
+    !colorheaderdark = darken_percent(!colorheader, 30%)
+    +fancy-gradient(!colorheader, !colorheaderdark)
     !height = 37px
     text-align: center
     font-family: Helvetica
     font-weight: bold
     color: white
-    font-size: 15pt
+    font-size= !fontsize
     line-height= !height
     height= !height
     padding: 0 85px
     border-bottom: 1px solid #2d3642
     +text-shadow(rgba(0, 0, 0, 0.6), 0px, -1px, 0px)
-   
+    +ellipsis
+  
+=page-title
+    color= !colordark
+    font-size: 24pt
+    +text-shadow(lighten_percent(!colortheme, 60%), 1px, 1px, 0px)
 
 =iphone-page
     width: 320px
@@ -75,7 +93,7 @@
 =iphone-forward-button
     +iphone-back-button(!images + /forward_button, "0 11 0 4")
     border-width: 0 11px 0 4px
-    
+
 #forfun
 =iphone-apple
     font-size: 64pt

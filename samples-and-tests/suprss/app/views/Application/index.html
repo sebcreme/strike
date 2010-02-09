@@ -2,12 +2,28 @@
 #{set title:'Home' /}
 
 <div class="page">
-    <h1>${title}</h1>
-    <div class="back-button">Back</div>
-    <div class="forward-button">Forward</div>
-    <p class="apple">&#9762;</p>
-    <button class="yes">Yes</button>
-    <button class="no">No</button>
-    <button class="perhaps">Perhaps</button>
+    <h1>ITR <em id="manager">Manager</em><em id="com">.com</em></h1>
+    <h2>top articles</h2>
+    <ul>
+        <li>
+            <article>
+    			<p class="date"></p>
+    			<div class="text">
+    			
+    			</div>
+    		</article>
+        </li>    
+        <script type="text/html" id="item_tmpl">
+    		<li class="item">
+    		    <a class="" href="#"><%=title%></a>
+    			<article>
+    				<p class="date"><%=date%></p>
+					<div class="text">
+						<%=description%>
+					</div>
+    			</article>
+    			</li>
+    	</script>
+    </ul>
     
 </div>
