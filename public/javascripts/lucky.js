@@ -1,7 +1,8 @@
 // ~~~~~~~~~~~~~~~~~~~~ Utils
 // mini jquery
 window.$ = HTMLElement.prototype.$ = function(selector) {
-	var context=this==window?document:this,results=context.querySelectorAll(selector),isId=/^\#[a-zA-Z]*$/;
+    if (selector == null) return null
+	var context=this==window?document:this,results=context.querySelectorAll(selector),isId=/^\#[a-zA-Z_\-]*$/;
 	if (isId.test(selector) && results) return results[0]
 	else return results
 }
@@ -78,7 +79,7 @@ $ajax = function(method, url, callback){
         	    }
     	    }
     	    if (this.readyState == 4 && this.status != 200){
-    	        error(e)
+    	        error(this.status)
     	    }
     }
     req.send()
@@ -106,21 +107,61 @@ tmpl = function tmpl(str, data)
 		.split("\r").join("\\'")
 		+ "');}return p.join('');");
 	return data ? fn( data ) : fn;
+    
 };
-
-onIphone = ("createTouch" in document)
 
 HTMLElement.prototype.on = function(event, handler) {
     if (event=='touchend' && !onIphone) event = 'mouseup';
 	if (event=='touchstart' && !onIphone) event = 'mousedown';
 	this.addEventListener(event, handler);
 }
-// ~~~~~~~~~~~~~~~~~~~~ ????
-if (onIphone) {
-	window.alert = function(message) {
-		Lucky.pushCommand('alert://dummy?'+encodeURIComponent(message));
-	}
+
+/**
+* DEV & DEBUG TOOLS
+**/
+onIphone = ("createTouch" in document)
+if (!onIphone){
+    var cacheStatusValues = [];
+    cacheStatusValues[0] = 'uncached';
+    cacheStatusValues[1] = 'idle';
+    cacheStatusValues[2] = 'checking';
+    cacheStatusValues[3] = 'downloading';
+    cacheStatusValues[4] = 'updateready';
+    cacheStatusValues[5] = 'obsolete';
+
+    var cache = window.applicationCache;
+    cache.addEventListener('cached', logEvent, false);
+    cache.addEventListener('checking', logEvent, false);
+    cache.addEventListener('downloading', logEvent, false);
+    cache.addEventListener('error', logEvent, false);
+    cache.addEventListener('noupdate', logEvent, false);
+    cache.addEventListener('obsolete', logEvent, false);
+    cache.addEventListener('progress', logEvent, false);
+    cache.addEventListener('updateready', logEvent, false);
+
+    function logEvent(e) {
+        var online, status, type, message;
+        online = (navigator.onLine) ? 'yes' : 'no';
+        status = cacheStatusValues[cache.status];
+        type = e.type;
+        message = 'online: ' + online;
+        message+= ', event: ' + type;
+        message+= ', status: ' + status;
+        if (type == 'error' && navigator.onLine) {
+            message+= ' (prolly a syntax error in manifest)';
+        }
+        console.log(message);
+    }
 }
+window.applicationCache.addEventListener(
+    'updateready',
+    function(){
+        window.applicationCache.swapCache();
+        console.log('swap cache has been called');
+    },
+    false
+);
+
 window.log = function(message) {
 	if (onIphone)  Lucky.pushCommand('log://dummy?'+encodeURIComponent(message));
 	else console.log(message)
@@ -159,7 +200,7 @@ Lucky = {
 	getContacts : function(){
 		if (onIphone) this.pushCommand('contacts://dummy?start') ;
 		else {
-			Lucky._contacts = [{firstName : "Clément", lastName : "Alteresco", address : "42boulevard de Sébastopol 75003 Paris France"}, {firstName : "Annette", lastName : "Desfontaines", address : "33 Rue Lecarpentier,Granville 50100"}, {firstName : "Francois", lastName : "Crème", address : "38 rue Raymond Poincaré,Bouxières aux dames 54136"}, {firstName : "Benoit", lastName : "Gasquet", address : "13 rue Léon Cogniet,75017 PARIS"}, {firstName : "Arnaud", lastName : "Welfringer", address : "10 rue de la Pierre levée,code 50b89 1et porte h"}, {firstName : "Damien", lastName : "De Carné", address : "63 rue Pierre Semard,Nancy 54000"}, {firstName : "Corinne", lastName : "HARCOURT", address : "Route principale,Marpissa, Paros"}, {firstName : "Francois", lastName : "Bonicel", address : "93 rue Jules Guesde,Levallois Perret 92300"}, {firstName : "Camille", lastName : "Amoretti", address : "3,Rue De Clery"}, {firstName : "Arnaud", lastName : "Benahmed", address : "8651 west olympic,Beverly Hills, CA"}, {firstName : "Fabien", lastName : "Enon", address : "Place Des Mimosas,Craponne 69290"}, {firstName : "Marlène", lastName : "Bouchet", address : "35 rue Chaude,Savonnières 37510"}, {firstName : "Guillaume", lastName : "Bort", address : "3 rue des Pyrénées,75020 Paris"}, {firstName : "Jean-François", lastName : "Colau", address : "37 rue de menilmontant,paris 75020"}, {firstName : "Huguette", lastName : "Chaudey", address : "9 bis rue de la paix.,Tomblaine 54510"}, {firstName : "Martine", lastName : "Weber", address : "7 av. Du grémillon,Pulnoy 54425"}, {firstName : "Laure-Lou", lastName : "Piguet", address : "4 rue Pierre Sonnerat,Lyon 69008"}, {firstName : "Martine", lastName : "Weber", address : "7 av. Du grémillon,Pulnoy 54425"}, {firstName : "Jean", lastName : "Baldier", address : "8 rue du 21 Regiment d aviation,Nancy 54000"}, {firstName : "Jean", lastName : "Gaillard", address : "9 rue carvès,code a380"}, {firstName : "Marcel", lastName : "Maury", address : "11 rue des plantes,Seichamps 54280"}, {firstName : "Sophie", lastName : "Rouanet", address : "13 Rue Tesson,Paris 75010"}, {firstName : "Sonia", lastName : "Zannad", address : "86,Rue Saint Martin"}, {firstName : "Mohamed", lastName : "Mansouri", address : "23 rue auguste vacquerie,paris"}, {firstName : "Nicolas", lastName : "le Douarec", address : "22 rue du Bouloi / 75001 Paris"}, {firstName : "Serge", lastName : "Blanpain", address : "17 rue St Charles,Jarville la Malgrange 54140"}, {firstName : "Renée", lastName : "Creme", address : "15 rue de provence,Illkirch Grafenstaden 67400"}, {firstName : "thomas", lastName : "gruget", address : "133 bd st michel"} ]
+			Lucky._contacts = [ ]
 		}
 	},
 	stopLocate: function(){
