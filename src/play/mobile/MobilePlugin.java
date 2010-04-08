@@ -27,7 +27,7 @@ public class MobilePlugin extends PlayPlugin{
     public static Boolean inEmulator = false;
     @Override
     public void onRoutesLoaded() {
-        if (Play.mode == Play.Mode.DEV) Router.prependRoute("GET", "/@emulator", "PlayMobile.emulator");
+        if (Play.mode == Play.Mode.DEV) Router.addRoute("GET", "/@emulator", "PlayMobile.emulator");
     }
 
     @Override
