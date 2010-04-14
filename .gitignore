@@ -1,0 +1,6 @@
+# The path starts at the $GIT_DIR and not '/'
+.DS_Store
+.sass-cache
+samples-and-tests/suprss/tmp/*
+samples-and-tests/suprss/nbproject/*
+samples-and-tests/suprss/logs/*
