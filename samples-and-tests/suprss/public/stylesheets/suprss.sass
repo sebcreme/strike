@@ -1,0 +1,49 @@
+!colortheme = #553A6D
+@import iphone.sass
+!orange = #FDAE35
+h1
+    +iphone-header(!orange)
+
+.back-button
+    +iphone-back-button
+    +iphone-left-button
+.forward-button
+    +iphone-forward-button
+    +iphone-right-button
+.apple
+    +iphone-apple
+.page
+    +iphone-page
+
+a
+    text-decoration: none
+em  
+    color: #3C194F
+    font-size: 10pt
+    &#rss
+        text-transform: uppercase
+        
+h2
+    +page-title
+li
+    border-bottom= 1px solid !colortheme
+    a
+        padding: 10px
+        text-shadow: rgba(0,0,0,0.5) -1px -1px 1px
+        color: #fff
+        display: block
+        font-size: 18px
+    &.active
+        background-color= !orange
+        article
+            display: block
+article
+    display: none
+    background: -webkit-gradient(linear, 0 0, 0 100, from(#bbb), to(#fff))
+    padding: 10px
+    .date
+        text-shadow: rgba(255,255,255,0.5) 1px 1px 1px
+        text-align: center
+        color: #777
+    img
+        max-width: 290px
