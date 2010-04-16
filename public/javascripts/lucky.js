@@ -111,16 +111,17 @@ tmpl = function tmpl(str, data)
 };
 
 HTMLElement.prototype.on = function(event, handler) {
-    if (event=='touchend' && !onIphone) event = 'mouseup';
-	if (event=='touchstart' && !onIphone) event = 'mousedown';
+    if (event=='touchend' && !onMobile) event = 'mouseup';
+	if (event=='touchstart' && !onMobile) event = 'mousedown';
 	this.addEventListener(event, handler);
 }
 
 /**
 * DEV &  TOOLS
 **/
-onIphone = ("createTouch" in document)
-if (!onIphone){
+onMobile = navigator.userAgent.indexOf('Android') + navigator.userAgent.indexOf('iPhone;') > 0
+
+if (!onMobile){
     var cacheStatusValues = [];
     cacheStatusValues[0] = 'uncached';
     cacheStatusValues[1] = 'idle';
@@ -163,7 +164,7 @@ window.applicationCache.addEventListener(
 );
 
 window.log = function(message) {
-	if (onIphone)  Lucky.pushCommand('log://dummy?'+encodeURIComponent(message));
+	if (onMobile)  Lucky.pushCommand('log://dummy?'+encodeURIComponent(message));
 	else console.log(message)
 }
 // ~~~~~~~~~~~~~~~~~~~~ Lucky
@@ -184,7 +185,8 @@ Lucky = {
 		this.commandQueue.push(command);
 	},
 	maps : function(query){
-		this.pushCommand('maps://dummy?'+encodeURI(query));
+	    window.open('http://maps.google.com?'+query)
+		//this.pushCommand('maps://dummy?'+encodeURI(query));
 	},
 	showMap: function() {
     	this.pushCommand('showMap://dummy');
@@ -200,7 +202,7 @@ Lucky = {
     
 	locate: function(handler){
 		Lucky.handlers['locate'] = handler;
-		if (onIphone) {
+		if (onMobile) {
 		     navigator.geolocation.getCurrentPosition(function(position){
                    handler(position.coords)
                 })
@@ -213,19 +215,19 @@ Lucky = {
 		}
 	},
 	getContacts : function(){
-		if (onIphone) this.pushCommand('contacts://dummy?start') ;
+		if (onMobile) this.pushCommand('contacts://dummy?start') ;
 		else {
 			Lucky._contacts = [ ]
 		}
 	},
 	stopLocate: function(){
-		if (onIphone)this.pushCommand('locate://dummy?stop');
+		if (onMobile)this.pushCommand('locate://dummy?stop');
 		else console.log("Stopping Localisation : no implemented in webkit mode");
 	},
 	
 	lang: function(handler) {
 		this.handlers['lang'] = handler;
-		if (onIphone){
+		if (onMobile){
 			this.pushCommand('lang://dummy');
 		} else {
 			this.commandResult('lang', 'en');
@@ -412,7 +414,7 @@ Lucky = {
 		}	
 	},
 	fakeTouch : function(nodeElement){
-		if (!onIphone){
+		if (!onMobile){
 			if (nodeElement.hasChildNodes){
 				nodeElement.childNodes.each(function(node){
 					if (node.hasChildNodes()) Lucky.fakeTouch(node)
