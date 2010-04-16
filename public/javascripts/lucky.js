@@ -117,7 +117,7 @@ HTMLElement.prototype.on = function(event, handler) {
 }
 
 /**
-* DEV & DEBUG TOOLS
+* DEV &  TOOLS
 **/
 onIphone = ("createTouch" in document)
 if (!onIphone){
@@ -183,13 +183,28 @@ Lucky = {
 	pushCommand : function(command){
 		this.commandQueue.push(command);
 	},
-	maps:function(query){
+	maps : function(query){
 		this.pushCommand('maps://dummy?'+encodeURI(query));
 	},
-	
+	showMap: function() {
+    	this.pushCommand('showMap://dummy');
+    },
+
+    hideMap: function() {
+    	this.pushCommand('hideMap://dummy');
+    },
+
+	setMarkers: function(def) {
+	    this.pushCommand('setMarkers://dummy?');
+	},
+    
 	locate: function(handler){
 		Lucky.handlers['locate'] = handler;
-		if (onIphone) this.pushCommand('locate://dummy?start');
+		if (onIphone) {
+		     navigator.geolocation.getCurrentPosition(function(position){
+                   handler(position.coords)
+                })
+		}
 		else {
 			setTimeout(function(){
 				//http://maps.google.fr/maps?f=q&source=s_q&hl=fr&q=La+Plalace+Stanice+Stanislas,+Pslas,+54000+Nancy,+Meurthe-et-Moselle,+Lorraine&sll=48.812051,2.323631&sspn=0.008054,0.011458&ie=UTF8&cd=2&geocode=FVMB5wIdlFleAA&split=0&ll=48.693907,6.183329&spn=0.030877,0.045834&z=14&iwloc=A&brcurrent=5,0
@@ -222,7 +237,7 @@ Lucky = {
 	setMessages: function(messages, lang) {
 		if(!messages[lang]) lang = 'en';
 		window.lucky_messages = messages[lang];
-		$$('.i18n').each(function(el) {
+		$('.i18n').each(function(el) {
 			var id = el.id;
 			var message = lucky_messages[id];
 			if(message) {

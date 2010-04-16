@@ -17,6 +17,12 @@
 
 body
     font: 14px "Lucida Grande", sans-serif
+    margin: 0
+    padding: 0
+    -webkit-tap-highlight-color: rgba(0,0,0,0)
+    -webkit-perspective: 800
+    background: #000
+    font-family: Helvetica
     
 =iphone-header(!colorheader = !colortheme, !fontsize = "15pt")
     !colorheaderdark = darken_percent(!colorheader, 30%)
@@ -44,6 +50,7 @@ body
     height: 460px
     background: #fff
     position: relative
+    display: none
     +v-gradient(!colorlight, !colortheme)
 
 =iphone-top-button
@@ -93,6 +100,17 @@ body
 =iphone-forward-button
     +iphone-back-button(!images + /forward_button, "0 11 0 4")
     border-width: 0 11px 0 4px
+=iphone-list
+    list-style: none
+    margin: 0
+    padding: 0
+    background: white
+=iphone-list-item
+    border-bottom: 1px solid #E0E0E0
+    padding: 8px 20px 8px 10px
+    background: url(/public/images/mobile/chevron.png) no-repeat 300px 14px
+    &.selected
+        background: #194FDB url(/public/images/mobile/chevron-white.png) no-repeat 300px 14px
 
 #forfun
 =iphone-apple
