@@ -1,0 +1,23 @@
+h1. Here is play! mobile
+
+Welcome to Play! Module. Ready to make stuf for your fingers ?
+
+h1. Some tricks
+
+* add iPhone/iPod meta for handling zoom, screen size.
+in main.html : 
+
+bc. 
+#{meta-iphone-webapp /}
+
+* add javascript lucky library
+
+bc. <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/lucky.js'}"></script> 
+
+* add init hook 
+
+bc. Lucky.onready(function(){
+  alert('toto')
+})
+
+

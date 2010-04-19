@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>#{get 'title' /}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        
+        <link rel="stylesheet" type="text/css" media="screen" href="@{'public/stylesheets/demo.sass'}">
+        <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/lucky.js'}"></script>
+        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        #{meta-iphone-webapp /}
+        <script type="text/javascript" charset="utf-8">
+            Lucky.onready(function(){Lucky.show('#account')})
+        </script>
+        
+    </head>
+    <body>
+        <div id="home" class="page">
+            <h1 id="tassi_play">Tassi Play</h1>
+            
+            <button onclick="Lucky.next('#account')">Se connecter</button>
+        </div>
+        <div id="account" class="page">
+            <h1 id="mon_compte">Mon Compte</h1>
+            <div class="back" onclick="Lucky.prev('#home')">home</div>
+            <ul>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+            </ul>
+        </div>
+    </body>
+</html>
