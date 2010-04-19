@@ -4,3 +4,4 @@
 samples-and-tests/suprss/tmp/*
 samples-and-tests/suprss/nbproject/*
 samples-and-tests/suprss/logs/*
+dist/
