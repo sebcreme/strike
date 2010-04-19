@@ -1,5 +1,11 @@
 Bug Tracker is hosted in lighthouse : http://sebcreme.lighthouseapp.com/projects/49235-playmobile/overview
 
-Please add the number of the ticket in you commit like #1
+Please add the number of the ticket in youR commit like #1
+you can also add state resolution in your commit message with :
+
+[#1 state:resolved]
+
+This is cool!
+
 
 TODO : This readme should be explaniee in mardown wiki associated with this project!
