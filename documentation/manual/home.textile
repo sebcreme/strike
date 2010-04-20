@@ -20,4 +20,31 @@ bc. Lucky.onready(function(){
   alert('toto')
 })
 
+h2. Road Map
 
+We are trying to describe what this mobile module can do
+
+h3. Development
+
+h4. Day to day development 
+
+This module should help any developpers to make a web mobile application
+
+    * provide a unifying way to switch betwwen mobile and desktop version
+    * simulate geolocation
+    * simulate screen size
+    * simulate touch events
+    * simulate orientation change
+    * provide tools for handling offline data and affline events
+
+h4. Continous integration
+
+    * provide unit and functionnal testing for the application
+    
+h3. Production
+
+This module will bring a production mode for managing
+
+    * file size: compression of css/html/images in 1 file
+    * application cache
+    
