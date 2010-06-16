@@ -203,16 +203,38 @@ Lucky = {
 	locate: function(handler){
 		Lucky.handlers['locate'] = handler;
 		if (onMobile) {
-		     navigator.geolocation.getCurrentPosition(function(position){
-                   handler(position.coords)
-                })
+			navigator.geolocation.getCurrentPosition(function(position){
+            	handler(position.coords)
+        	})
 		}
 		else {
-			setTimeout(function(){
-				//http://maps.google.fr/maps?f=q&source=s_q&hl=fr&q=La+Plalace+Stanice+Stanislas,+Pslas,+54000+Nancy,+Meurthe-et-Moselle,+Lorraine&sll=48.812051,2.323631&sspn=0.008054,0.011458&ie=UTF8&cd=2&geocode=FVMB5wIdlFleAA&split=0&ll=48.693907,6.183329&spn=0.030877,0.045834&z=14&iwloc=A&brcurrent=5,0
-				Lucky.commandResult('locate', {longitude:6.183329, latitude:48.693907, accuracy:100});
-			}, 2000)
+			this.geoPicker( handler );
 		}
+	},
+	geoPicker: function( handler ){
+		var _this = this;
+		
+		// Open the Google Map window
+		var jQuery = parent.window.jQuery;
+		var map = jQuery( '#geopicker' );
+		map.attr( "src", "@geopicker" );
+		map.bind("load", function(){
+			var $this = jQuery( this );
+			$this.fadeIn();
+			this.contentWindow.geopicker.setCallback( function( pos ){
+				if( pos == null ){
+					$this.fadeOut();
+					return;
+				}
+				
+				Lucky.commandResult('locate', { longitude:pos.b, latitude:pos.c, accuracy:100 });
+				// Hide the map
+				setTimeout(function(){
+					$this.fadeOut();
+				},400);
+			});
+		});
+	
 	},
 	getContacts : function(){
 		if (onMobile) this.pushCommand('contacts://dummy?start') ;

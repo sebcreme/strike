@@ -2,6 +2,7 @@
 <html>
     <head>
 		<title>Geo Picker</title>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<link rel="stylesheet" href="@{'/public/stylesheets/geopicker.sass'}" type="text/css" media="screen" charset="utf-8">
 	</head>
 	<body>
@@ -20,17 +21,20 @@
 				geopicker.init();
 			});
 			
-			var onSelectCallback = null; // This function will be created by the parent window
 			var geopicker = {
 				map: null,
 				clickTimer: null,
+				onSelect: null,
+				setCallback: function( callback ){
+					this.onSelect = callback;
+				},
 				init: function(){
 					var _this = this;
 					// Attach event handlers
 					$( "#mapSearch" ).click( function(){ _this.geocodeAddress(); });
 					$( "#mapCancel" ).click( function(){
-						if(onSelectCallback)
-							onSelectCallback( null );
+						if(_this.onSelect)
+							_this.onSelect( null );
 					});
 					
 					// Set up map
@@ -58,8 +62,8 @@
 									      position: latlng, 
 									      map: map
 									});
-									if(onSelectCallback)
-										onSelectCallback( latlng );	
+									if(_this.onSelect)
+										_this.onSelect( latlng );	
 					          	}
 							}, 400);
 						}					

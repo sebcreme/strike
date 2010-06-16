@@ -27,7 +27,10 @@ public class MobilePlugin extends PlayPlugin{
     public static Boolean inEmulator = false;
     @Override
     public void onRoutesLoaded() {
-        if (Play.mode == Play.Mode.DEV) Router.addRoute("GET", "/@emulator", "PlayMobile.emulator");
+        if (Play.mode == Play.Mode.DEV){
+			Router.addRoute("GET", "/@emulator", "PlayMobile.emulator");
+			Router.addRoute("GET", "/@geopicker", "PlayMobile.geopicker");
+		} 
     }
 
     @Override
