@@ -99,7 +99,7 @@ this.tmpl = function tmpl(str, data) {
         if (!cache[str]){
           cache[str] = tmpl(document.getElementById(str).innerHTML)
         }
-        }catch (error){console.log('error when rendering #'+a+' :: '+error.message)}
+        }catch (error){console.log('error when rendering #'+str+' :: '+error.message)}
       
       fn = cache[str] 
     } else {
