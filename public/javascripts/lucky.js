@@ -2,13 +2,13 @@
 // mini jquery
 window.$ = HTMLElement.prototype.$ = function(selector) {
     if (selector == null) return null
-	var context=this==window?document:this,results=context.querySelectorAll(selector),isId=/^\#[a-zA-Z_\-]*$/;
-	if (isId.test(selector) && results) return results[0]
-	else return results
+    var context=this==window?document:this,results=context.querySelectorAll(selector),isId=/^\#[a-zA-Z_\-]*$/;
+    if (isId.test(selector) && results) return results[0]
+    else return results
 }
 var each = function(c) {
     for(var i=0; i<this.length; i++) {
-    	c(this[i], i);
+        c(this[i], i);
     }
 }
 Array.prototype.each = each;
@@ -43,10 +43,10 @@ Element.prototype.height = function(){return window.getComputedStyle(this,"").ge
  */
 function css(prop, value)
 {
-	if (value)
-		this.style.setProperty(prop, value);
-	else
-		return window.getComputedStyle(this, null)[prop]
+    if (value)
+        this.style.setProperty(prop, value);
+    else
+        return window.getComputedStyle(this, null)[prop]
 }
 HTMLElement.prototype.css = css;
 
@@ -69,18 +69,18 @@ $ajax = function(method, url, callback){
     req.open(method, url, async)
     req.setRequestHeader('Accept', 'text/json')
     req.onreadystatechange = function(){
-        	if (this.readyState == 4 && this.status == 200){
-        	    try{
-        	        if (this.responseXML) callback(this.responseXML)
-        	        else callback(eval('('+this.responseText+')'))
-        	    } catch (e){
-        	        console.log('cannot parse json because of '+e)
-        	        error(e)
-        	    }
-    	    }
-    	    if (this.readyState == 4 && this.status != 200){
-    	        error(this.status)
-    	    }
+            if (this.readyState == 4 && this.status == 200){
+                try{
+                    if (this.responseXML) callback(this.responseXML)
+                    else callback(eval('('+this.responseText+')'))
+                } catch (e){
+                    console.log('cannot parse json because of '+e)
+                    error(e)
+                }
+            }
+            if (this.readyState == 4 && this.status != 200){
+                error(this.status)
+            }
     }
     req.send()
 }
@@ -91,29 +91,29 @@ $ajax = function(method, url, callback){
 var cache = {}
 tmpl = function tmpl(str, data)
 {
-	var fn = !/\W/.test(str) ?
-	cache[str] = cache[str] ||
-	tmpl(document.getElementById(str).innerHTML) :
-		new Function("obj",
-		"var p=[],print=function(){p.push.apply(p,arguments);};" +
-		"with(obj){p.push('" +
-		str
-		.replace(/[\r\t\n]/g, " ")
-		.split("<%").join("\t")
-		.replace(/((^|%>)[^\t]*)'/g, "$1\r")
-		.replace(/\t=(.*?)%>/g, "',$1,'")
-		.split("\t").join("');")
-		.split("%>").join("p.push('")
-		.split("\r").join("\\'")
-		+ "');}return p.join('');");
-	return data ? fn( data ) : fn;
+    var fn = !/\W/.test(str) ?
+    cache[str] = cache[str] ||
+    tmpl(document.getElementById(str).innerHTML) :
+        new Function("obj",
+        "var p=[],print=function(){p.push.apply(p,arguments);};" +
+        "with(obj){p.push('" +
+        str
+        .replace(/[\r\t\n]/g, " ")
+        .split("<%").join("\t")
+        .replace(/((^|%>)[^\t]*)'/g, "$1\r")
+        .replace(/\t=(.*?)%>/g, "',$1,'")
+        .split("\t").join("');")
+        .split("%>").join("p.push('")
+        .split("\r").join("\\'")
+        + "');}return p.join('');");
+    return data ? fn( data ) : fn;
     
 };
 
 HTMLElement.prototype.on = function(event, handler) {
     if (event=='touchend' && !onMobile) event = 'mouseup';
-	if (event=='touchstart' && !onMobile) event = 'mousedown';
-	this.addEventListener(event, handler);
+    if (event=='touchstart' && !onMobile) event = 'mousedown';
+    this.addEventListener(event, handler);
 }
 
 /**
@@ -164,308 +164,319 @@ window.applicationCache.addEventListener(
 );
 
 window.log = function(message) {
-	if (onMobile)  Lucky.pushCommand('log://dummy?'+encodeURIComponent(message));
-	else console.log(message)
+    if (onMobile)  Lucky.pushCommand('log://dummy?'+encodeURIComponent(message));
+    else console.log(message)
 }
 // ~~~~~~~~~~~~~~~~~~~~ Lucky
 Lucky = {
-	commandQueue:[],
-	currentPage: null,
-	onReadyHandlers: [],
-	handlers : {},
-	currentSlide: null,
-	//~~~~~~~ SYSTEM ~~~~~~~//
-	nextCommand : function(message, args){
-		return this.commandQueue.length > 0 ? this.commandQueue.pop() : 'nocommand';
-	},
-	commandResult : function(type, args){
-		if (this.handlers[type]) this.handlers[type](args);
-	},
-	pushCommand : function(command){
-		this.commandQueue.push(command);
-	},
-	maps : function(query){
-	    window.open('http://maps.google.com?'+query)
-		//this.pushCommand('maps://dummy?'+encodeURI(query));
-	},
-	showMap: function() {
-    	this.pushCommand('showMap://dummy');
+    commandQueue:[],
+    currentPage: null,
+    onReadyHandlers: [],
+    onOrientationChangeHandlers: [],
+    handlers : {},
+    currentSlide: null,
+    //~~~~~~~ SYSTEM ~~~~~~~//
+    nextCommand : function(message, args){
+        return this.commandQueue.length > 0 ? this.commandQueue.pop() : 'nocommand';
+    },
+    commandResult : function(type, args){
+        if (this.handlers[type]) this.handlers[type](args);
+    },
+    pushCommand : function(command){
+        this.commandQueue.push(command);
+    },
+    maps : function(query){
+        window.open('http://maps.google.com?'+query)
+        //this.pushCommand('maps://dummy?'+encodeURI(query));
+    },
+    showMap: function() {
+        this.pushCommand('showMap://dummy');
     },
 
     hideMap: function() {
-    	this.pushCommand('hideMap://dummy');
+        this.pushCommand('hideMap://dummy');
     },
 
-	setMarkers: function(def) {
-	    this.pushCommand('setMarkers://dummy?');
-	},
+    setMarkers: function(def) {
+        this.pushCommand('setMarkers://dummy?');
+    },
     
-	locate: function(handler){
-		Lucky.handlers['locate'] = handler;
-		if (onMobile) {
-			navigator.geolocation.getCurrentPosition(function(position){
-            	handler(position.coords)
-        	})
-		}
-		else {
-			this.geoPicker( handler );
-		}
-	},
-	geoPicker: function( handler ){
-		var _this = this;
-		
-		// Open the Google Map window
-		var jQuery = parent.window.jQuery;
-		var map = jQuery( '#geopicker' );
-		map.attr( "src", "@geopicker" );
-		map.bind("load", function(){
-			var $this = jQuery( this );
-			$this.fadeIn();
-			this.contentWindow.geopicker.setCallback( function( pos ){
-				if( pos == null ){
-					$this.fadeOut();
-					return;
-				}
-				
-				Lucky.commandResult('locate', { longitude:pos.b, latitude:pos.c, accuracy:100 });
-				// Hide the map
-				setTimeout(function(){
-					$this.fadeOut();
-				},400);
-			});
-		});
-	
-	},
-	getContacts : function(){
-		if (onMobile) this.pushCommand('contacts://dummy?start') ;
-		else {
-			Lucky._contacts = [ ]
-		}
-	},
-	stopLocate: function(){
-		if (onMobile)this.pushCommand('locate://dummy?stop');
-		else console.log("Stopping Localisation : no implemented in webkit mode");
-	},
-	
-	lang: function(handler) {
-		this.handlers['lang'] = handler;
-		if (onMobile){
-			this.pushCommand('lang://dummy');
-		} else {
-			this.commandResult('lang', 'en');
-		}
-	},
-	reverseGeoCode : function(handler){
-		this.handlers['reverseGeoCode'] = handler;
-	},
-	setMessages: function(messages, lang) {
-		if(!messages[lang]) lang = 'en';
-		window.lucky_messages = messages[lang];
-		$('.i18n').each(function(el) {
-			var id = el.id;
-			var message = lucky_messages[id];
-			if(message) {
-				el.innerHTML = message;
-			}
-		});
-	},
-	
-	getMessage: function(key) {
-		return lucky_messages[key];
-	},
-	onready :function(handler){
-		Lucky.onReadyHandlers.push(handler);
-	},
-	ready : function(){
-		this.onReadyHandlers.each(function(handler){
-			handler();
-		});
-		this.pushCommand('ready')
-	},
-	//~~~~~~~ UI ~~~~~~~//
-	show: function(page) {
-		Lucky._cleanPage(page);
-		new Transition('none', 0.35, 'linear').perform($(page), $(Lucky.currentPage), false);
-		Lucky.currentPage = page;
-	},
-	
-	flip: function(page) {
-		Lucky._cleanPage(page);
-		new Transition('flip', 0.65, 'linear').perform($(page), $(Lucky.currentPage), false);
-		Lucky.currentPage = page;
-	},
-	
-	unflip: function(page) {
-		Lucky._cleanPage(page);
-		new Transition('flip', 0.65, 'linear').perform($(page), $(Lucky.currentPage), true);
-		Lucky.currentPage = page;
-	},
-	
-	next: function(page) {
-		Lucky._cleanPage(page);
-		new Transition('push', 0.35, 'ease').perform($(page), $(Lucky.currentPage), false);
-		Lucky.currentPage = page;
-	},
-	
-	prev: function(page) {
-		Lucky._cleanPage(page);
-		var transition = new Transition('push', 0.35, 'ease');
-		transition.perform($(page), $(Lucky.currentPage), true);			
-		Lucky.currentPage = page;
-	},
-	
-	rotateRight: function(page) {
-		Lucky._cleanPage(page);
-		new Transition('cube', 0.55, 'ease').perform($(page), $(Lucky.currentPage), false);
-		Lucky.currentPage = page;
-	},
-	
-	rotateLeft: function(page) {
-		Lucky._cleanPage(page);
-		new Transition('cube', 0.55, 'ease').perform($(page), $(Lucky.currentPage), true);
-		Lucky.currentPage = page;
-	},
-	
-	fade: function(page) {
-		Lucky._cleanPage(page);
-		new Transition('dissolve', 0.35, 'linear').perform($(page), $(Lucky.currentPage), false);
-		Lucky.currentPage = page;
-	},
-	
-	swap: function(page) {
-		Lucky._cleanPage(page);
-		new Transition('swap', 0.55, 'linear').perform($(page), $(Lucky.currentPage), false);
-		Lucky.currentPage = page;
-	},
-	
-	_cleanPage: function(page) {
-		// Clean lists
-		$(page).querySelectorAll('.list li').each(function(it) {
-			$removeClass(it, 'selected');
-		});
-	},
-	
-	currentPanel: null,
-	
-	openPanel: function(page) {
-		var transition = new Transition('slide', 0.35, 'ease');
-		transition.direction = 'bottom-top';
-		transition.perform($(page), $(Lucky.currentPage), false);
-		Lucky.currentPanel = page;		
-	},
-	
-	closePanel: function() {
-		var transition = new Transition('slide', 0.35, 'ease');
-		transition.direction = 'bottom-top';
-		transition.perform($(Lucky.currentPage), $(Lucky.currentPanel), true);
-		setTimeout(function() {
-			$(Lucky.currentPanel).style.display = '';
-			Lucky.currentPanel = null;
-		}, 500);		
-	},
-	
-	currentOverlay: null,
-	
-	showOverlay: function(page, opacity) {
-		var el = $(page);
-		el.style.position = 'absolute';
-		el.style.top = '0';
-		el.style.left = '0';
-		el.style.opacity = '0';
-		el.style.zIndex = '1000';
-		el.style.display = 'block';
-		setTimeout(function() {
-			el.style.webkitTransition = 'opacity .25s linear';
-			el.style.opacity = opacity ? opacity : '1';
-		}, 0);
-		Lucky.currentOverlay = page;
-	},	
-	
-	hideOverlay: function(now) {
-		var el = $(Lucky.currentOverlay);
-		var onend = function() {
-			el.style.webkitTransition = '';
-			el.style.display = 'none';
-			el.removeEventListener('webkitTransitionEnd', onend, false);
-		};
-		if(now) {
-			el.style.display = 'none';
-		} else {
-			el.addEventListener('webkitTransitionEnd', onend, false);			
-		}
-		el.style.opacity = '0';
-	},
-		
+    locate: function(handler){
+        Lucky.handlers['locate'] = handler;
+        if (onMobile) {
+            navigator.geolocation.getCurrentPosition(function(position){
+                handler(position.coords)
+            })
+        }
+        else {
+            this.geoPicker( handler );
+        }
+    },
+    geoPicker: function( handler ){
+        var _this = this;
+        
+        // Open the Google Map window... 
+        // This makes BIG assumptions about the emulator.html page.
+        var jQuery = parent.window.jQuery;
+        var map = jQuery( '#geopicker' );
+        map.attr( "src", "@geopicker" );
+        map.bind("load", function(){
+            var $this = jQuery( this );
+            $this.fadeIn();
+            this.contentWindow.geopicker.setCallback( function( pos ){
+                if( pos == null ){
+                    $this.fadeOut();
+                    return;
+                }
+                
+                Lucky.commandResult('locate', { longitude:pos.b, latitude:pos.c, accuracy:100 });
+                // Hide the map
+                setTimeout(function(){
+                    $this.fadeOut();
+                },400);
+            });
+        });
+    
+    },
+    getContacts : function(){
+        if (onMobile) this.pushCommand('contacts://dummy?start') ;
+        else {
+            Lucky._contacts = [ ]
+        }
+    },
+    stopLocate: function(){
+        if (onMobile)this.pushCommand('locate://dummy?stop');
+        else console.log("Stopping Localisation : no implemented in webkit mode");
+    },
+    
+    lang: function(handler) {
+        this.handlers['lang'] = handler;
+        if (onMobile){
+            this.pushCommand('lang://dummy');
+        } else {
+            this.commandResult('lang', 'en');
+        }
+    },
+    reverseGeoCode : function(handler){
+        this.handlers['reverseGeoCode'] = handler;
+    },
+    setMessages: function(messages, lang) {
+        if(!messages[lang]) lang = 'en';
+        window.lucky_messages = messages[lang];
+        $('.i18n').each(function(el) {
+            var id = el.id;
+            var message = lucky_messages[id];
+            if(message) {
+                el.innerHTML = message;
+            }
+        });
+    },
+    
+    getMessage: function(key) {
+        return lucky_messages[key];
+    },
+    onready :function(handler){
+        Lucky.onReadyHandlers.push(handler);
+    },
+    ready : function(){
+        this.onReadyHandlers.each(function(handler){
+            handler();
+        });
+        this.pushCommand('ready')
+    },
+    onorientationchange: function(handler){
+        Lucky.onOrientationChangeHandlers.push(handler);
+    },
+    orientationChange : function( orientation ){
+        this.onOrientationChangeHandlers.each(function(handler){
+            handler( orientation );
+        });
+        this.pushCommand('orientationChange');
+    },
+    //~~~~~~~ UI ~~~~~~~//
+    show: function(page) {
+        Lucky._cleanPage(page);
+        new Transition('none', 0.35, 'linear').perform($(page), $(Lucky.currentPage), false);
+        Lucky.currentPage = page;
+    },
+    
+    flip: function(page) {
+        Lucky._cleanPage(page);
+        new Transition('flip', 0.65, 'linear').perform($(page), $(Lucky.currentPage), false);
+        Lucky.currentPage = page;
+    },
+    
+    unflip: function(page) {
+        Lucky._cleanPage(page);
+        new Transition('flip', 0.65, 'linear').perform($(page), $(Lucky.currentPage), true);
+        Lucky.currentPage = page;
+    },
+    
+    next: function(page) {
+        Lucky._cleanPage(page);
+        new Transition('push', 0.35, 'ease').perform($(page), $(Lucky.currentPage), false);
+        Lucky.currentPage = page;
+    },
+    
+    prev: function(page) {
+        Lucky._cleanPage(page);
+        var transition = new Transition('push', 0.35, 'ease');
+        transition.perform($(page), $(Lucky.currentPage), true);            
+        Lucky.currentPage = page;
+    },
+    
+    rotateRight: function(page) {
+        Lucky._cleanPage(page);
+        new Transition('cube', 0.55, 'ease').perform($(page), $(Lucky.currentPage), false);
+        Lucky.currentPage = page;
+    },
+    
+    rotateLeft: function(page) {
+        Lucky._cleanPage(page);
+        new Transition('cube', 0.55, 'ease').perform($(page), $(Lucky.currentPage), true);
+        Lucky.currentPage = page;
+    },
+    
+    fade: function(page) {
+        Lucky._cleanPage(page);
+        new Transition('dissolve', 0.35, 'linear').perform($(page), $(Lucky.currentPage), false);
+        Lucky.currentPage = page;
+    },
+    
+    swap: function(page) {
+        Lucky._cleanPage(page);
+        new Transition('swap', 0.55, 'linear').perform($(page), $(Lucky.currentPage), false);
+        Lucky.currentPage = page;
+    },
+    
+    _cleanPage: function(page) {
+        // Clean lists
+        $(page).querySelectorAll('.list li').each(function(it) {
+            $removeClass(it, 'selected');
+        });
+    },
+    
+    currentPanel: null,
+    
+    openPanel: function(page) {
+        var transition = new Transition('slide', 0.35, 'ease');
+        transition.direction = 'bottom-top';
+        transition.perform($(page), $(Lucky.currentPage), false);
+        Lucky.currentPanel = page;      
+    },
+    
+    closePanel: function() {
+        var transition = new Transition('slide', 0.35, 'ease');
+        transition.direction = 'bottom-top';
+        transition.perform($(Lucky.currentPage), $(Lucky.currentPanel), true);
+        setTimeout(function() {
+            $(Lucky.currentPanel).style.display = '';
+            Lucky.currentPanel = null;
+        }, 500);        
+    },
+    
+    currentOverlay: null,
+    
+    showOverlay: function(page, opacity) {
+        var el = $(page);
+        el.style.position = 'absolute';
+        el.style.top = '0';
+        el.style.left = '0';
+        el.style.opacity = '0';
+        el.style.zIndex = '1000';
+        el.style.display = 'block';
+        setTimeout(function() {
+            el.style.webkitTransition = 'opacity .25s linear';
+            el.style.opacity = opacity ? opacity : '1';
+        }, 0);
+        Lucky.currentOverlay = page;
+    },  
+    
+    hideOverlay: function(now) {
+        var el = $(Lucky.currentOverlay);
+        var onend = function() {
+            el.style.webkitTransition = '';
+            el.style.display = 'none';
+            el.removeEventListener('webkitTransitionEnd', onend, false);
+        };
+        if(now) {
+            el.style.display = 'none';
+        } else {
+            el.addEventListener('webkitTransitionEnd', onend, false);           
+        }
+        el.style.opacity = '0';
+    },
+        
 
-		
-	_touchStart: function(e) {
-		var node = e.target;
-		var it = 0;
-		while(node != null && it < 10) {
-			if(node.tagName) {
- 				if($hasClass(node, 'button') || $hasClass(node, 'submit-button')) {
-					$addClass(node, 'selected')
-					break;
-				}
-				if(node.tagName == 'LI' && $hasClass(node.parentNode, 'list')) {
-					node.parentNode.querySelectorAll('li').each(function(it) {
-						$removeClass(it, 'selected');						
-					});
-					$addClass(node, 'selected')
-					e.preventDefault();
-					break;
-				}	
-			}
-			it++;
-			node = node.parentNode;
-		}	
-	},
-	
-	_touchEnd: function(e) {	
-		var node = e.target;
-		var it = 0;
-		while(node != null && it < 10) {
-			if(node.className) {
- 				if($hasClass(node, 'button') || $hasClass(node, 'submit-button')) {
-					$removeClass(node, 'selected')
-					break;
-				}	
-			}
-			it++;
-			node = node.parentNode;
-		}	
-	},
-	fakeTouch : function(nodeElement){
-		if (!onMobile){
-			if (nodeElement.hasChildNodes){
-				nodeElement.childNodes.each(function(node){
-					if (node.hasChildNodes()) Lucky.fakeTouch(node)
-					if (node.getAttribute){
-						var executable = node.getAttribute('ontouchstart');
-						if (node.getAttribute('ontouchend') != null) executable += ';'+node.getAttribute('ontouchend');
-						if (executable){
-							node.onclick = function(){eval(executable)}
-						}
-					}
-				})
-			}
-		}
+        
+    _touchStart: function(e) {
+        var node = e.target;
+        var it = 0;
+        while(node != null && it < 10) {
+            if(node.tagName) {
+                if($hasClass(node, 'button') || $hasClass(node, 'submit-button')) {
+                    $addClass(node, 'selected')
+                    break;
+                }
+                if(node.tagName == 'LI' && $hasClass(node.parentNode, 'list')) {
+                    node.parentNode.querySelectorAll('li').each(function(it) {
+                        $removeClass(it, 'selected');                       
+                    });
+                    $addClass(node, 'selected')
+                    e.preventDefault();
+                    break;
+                }   
+            }
+            it++;
+            node = node.parentNode;
+        }   
+    },
+    
+    _touchEnd: function(e) {    
+        var node = e.target;
+        var it = 0;
+        while(node != null && it < 10) {
+            if(node.className) {
+                if($hasClass(node, 'button') || $hasClass(node, 'submit-button')) {
+                    $removeClass(node, 'selected')
+                    break;
+                }   
+            }
+            it++;
+            node = node.parentNode;
+        }   
+    },
+    fakeTouch : function(nodeElement){
+        if (!onMobile){
+            if (nodeElement.hasChildNodes){
+                nodeElement.childNodes.each(function(node){
+                    if (node.hasChildNodes()) Lucky.fakeTouch(node)
+                    if (node.getAttribute){
+                        var executable = node.getAttribute('ontouchstart');
+                        if (node.getAttribute('ontouchend') != null) executable += ';'+node.getAttribute('ontouchend');
+                        if (executable){
+                            node.onclick = function(){eval(executable)}
+                        }
+                    }
+                })
+            }
+        }
 
-	}
+    }
 }
 
 // ~~~~~~~~~~~~~~~~~~~~
 window.onload = function() {
-	Lucky.fakeTouch(document);
-	document.body.addEventListener('touchstart', Lucky._touchStart, false);
-	document.body.addEventListener('touchend', Lucky._touchEnd, false);
-	document.body.addEventListener('touchmove', function(e) {
-		//e.preventDefault();
-	}, false);
-	document.body.addEventListener('blur', function() {
-		window.scrollTo(0, 0);
-	}, true);
-	Lucky.ready();
+    Lucky.fakeTouch(document);
+    document.body.addEventListener('touchstart', Lucky._touchStart, false);
+    document.body.addEventListener('touchend', Lucky._touchEnd, false);
+    document.body.addEventListener('touchmove', function(e) {
+        //e.preventDefault();
+    }, false);
+    document.body.addEventListener('blur', function() {
+        window.scrollTo(0, 0);
+    }, true);
+    Lucky.ready();
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~ Thanks to Apple
@@ -665,7 +676,7 @@ Transition.prototype.perform = function(newView, oldView, isReverse)
             this._performRevolveTransition(isReverse);
         }
     }
-	Lucky.fakeTouch(document);
+    Lucky.fakeTouch(document);
 }
 
 Transition.areTransformsSupported = function () {
@@ -841,8 +852,8 @@ Transition.prototype._transitionEnded = function(event)
             this._newView.style.webkitTransformOrigin = '50% 50%';
         }
 
-		this._oldView.style.opacity = '1';
-		this._newView.style.opacity = '1';
+        this._oldView.style.opacity = '1';
+        this._newView.style.opacity = '1';
         
         this._checkedForEnded = true;
     }
