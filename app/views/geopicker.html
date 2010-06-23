@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<title>Geo Picker</title>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" href="@{'/public/stylesheets/geopicker.sass'}" type="text/css" media="screen" charset="utf-8">
+	</head>
+	<body>
+		<div id="mapCanvas"></div>
+		<form onsubmit="return false;">
+			<input type="text" id="mapSearchLocation" />
+			<input type="submit" id="mapSearch" value="go" />
+			<input type="button" id="mapCancel" value="cancel" />
+		</form>
+		
+		<script src="@{'/public/javascripts/jquery-1.4.min.js'}" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+		<script type="text/javascript" charset="utf-8">
+			
+			$(document).ready(function(){
+				geopicker.init();
+			});
+			
+			var geopicker = {
+				map: null,
+				clickTimer: null,
+				onSelect: null,
+				setCallback: function( callback ){
+					this.onSelect = callback;
+				},
+				init: function(){
+					var _this = this;
+					// Attach event handlers
+					$( "#mapSearch" ).click( function(){ _this.geocodeAddress(); });
+					$( "#mapCancel" ).click( function(){
+						if(_this.onSelect)
+							_this.onSelect( null );
+					});
+					
+					// Set up map
+					var defaultLatLng = new google.maps.LatLng(48.693907, 6.183329);
+					var mapOptions = {
+					  zoom: 8,
+					  center: defaultLatLng,
+					  mapTypeId: google.maps.MapTypeId.ROADMAP
+					};
+
+					map = new google.maps.Map( $("#mapCanvas")[0], mapOptions);
+					google.maps.event.addListener(map, "click", function(obj) {
+						if( _this.clickTimer ){
+							// Double click
+							clearTimeout( _this.clickTimer );
+							_this.clickTimer = null;
+							return;
+						}
+						else {
+							// Single click
+							_this.clickTimer = setTimeout( function(){
+								var latlng = obj.latLng;
+					          	if (latlng) {							
+									var marker = new google.maps.Marker({
+									      position: latlng, 
+									      map: map
+									});
+									if(_this.onSelect)
+										_this.onSelect( latlng );	
+					          	}
+							}, 400);
+						}					
+			        });
+				},
+				
+				geocodeAddress: function(){
+					var address = $("#mapSearchLocation").val();
+					var geocoder = new google.maps.Geocoder();
+					if (geocoder) {
+						geocoder.geocode( { 'address': address}, function(results, status) {
+							if (status == google.maps.GeocoderStatus.OK) {
+								map.setCenter(results[0].geometry.location);
+							} 
+							else {
+								if( status === google.maps.GeocoderStatus.ZERO_RESULTS ){
+									alert( 'No results found.')
+								} 
+								else {
+									alert( 'Geocode was not successful: ' + status);
+								}
+							}
+						});
+					}
+				}
+			}
+		</script>
+	</body>
+</html>

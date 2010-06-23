@@ -5,18 +5,67 @@
 =iphone-size
     width: 320px
     height: 460px
+
+=iphone-size-landscape
+    width: 480px
+    height: 300px
+
 body
     +fancy-matte-gradient(#2A3440, #6E89AA)
 
 .emulator iframe
-    +iphone-size
-    margin: 151px 0 0 33px
     font-family: helvetica
-    
+
+// Emulator container
 div.emulator
-    width: 383px
-    height: 725px
     +box-shadow(rgb(51, 51, 51), 10px, 10px, 100px)
     +border-radius(68px)
+     
+div.emulator.up, div.emulator.down
+    width: 383px
+    height: 725px
     background= url(!images/iphone.png) no-repeat
     margin: 25px auto
+
+div.emulator.left, div.emulator.right
+    width: 725px
+    height: 383px
+    margin: 200px auto
+
+div.emulator.left
+    background= url(!images/iphone-left.png) no-repeat top left
+
+div.emulator.right
+    background= url(!images/iphone-right.png) no-repeat top right
+    
+div.emulator.down
+    background= url(!images/iphone-down.png) no-repeat bottom left
+
+// Internal iframe
+#emulatorContent.up, #emulatorContent.down
+    +iphone-size
+    margin: 151px 0 0 33px
+
+#emulatorContent.down
+    -webkit-transform: rotate(180deg)
+    -webkit-perspective: 801
+    margin: 111px 0 0 33px
+        
+#emulatorContent.left, #emulatorContent.right
+    +iphone-size-landscape
+    margin: 53px 0px 0 114px
+
+#emulatorContent.left
+    margin: 53px 0px 0 131px
+
+#geopicker
+    +iphone-size
+    -webkit-perspective: 801
+    -webkit-transform: rotate(0deg)
+    position: relative
+    top: -550px
+    left: -150px
+    display: none
+    margin: 0
+    +box-shadow(rgb(51, 51, 51), 10px, 10px, 100px)
+    +border-radius(10px)

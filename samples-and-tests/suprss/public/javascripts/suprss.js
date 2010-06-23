@@ -1,7 +1,25 @@
-Lucky.onready(function(){suprss.init()})
+Lucky.onready(function(){suprss.init()});
 suprss = {
     init : function(){
+        
+        // Temporary test for emulator rotation
+        Lucky.onorientationchange(function( orientation ){
+            console.log( orientation )
+        });
         this.loadItems()
+
+        // Temporary "GEO" button for testing fake geo location
+        /*var button = document.createElement('input');
+        button.setAttribute( "type", "button" );
+        button.setAttribute( "value", "GEO test");
+        button.setAttribute( "id", "geotest" );
+        button.addEventListener("click", function(){
+            // do the geo location...
+            Lucky.locate(function(obj){
+                window.parent.document.getElementsByTagName("input")[0].value = "GEO " + obj.latitude + ":" + obj.longitude;
+            });
+        }, false);
+        window.parent.document.getElementsByTagName("div")[0].appendChild(button); */
     },
     loadItems : function(){
             $ajax('get','/public/rss.xml', function(list){
@@ -28,6 +46,8 @@ suprss = {
                             }
                     })
                 })
+
+                console.log(document.getElementById('locate'))
             })
     }
 }
