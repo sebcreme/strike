@@ -84,7 +84,7 @@ $ajax = function(method, url, callback){
     }
     req.send()
 }
-<<<<<<< HEAD
+
 // Simple JavaScript Templating
 // John Resig - http://ejohn.org/ - MIT Licensed
 
