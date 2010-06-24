@@ -11,19 +11,18 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         #{meta-iphone-webapp /}
         <script type="text/javascript" charset="utf-8">
-            Lucky.onready(function(){
-                var myScroll = new iScroll('scroller');
-                Lucky.show('#home')
-                
+        scroller = null
+            Lucky.onready(function(){                
+                Lucky.show('#home')  
             })
         </script>
         
         <style type="text/css" media="screen">
-            #wrapper {
+            .wrapper {
                 position:relative;
                 z-index:1;
                 width: 100%;
-                height:200px;
+                height:385px;
                 overflow:auto;
             }
         </style>
@@ -32,16 +31,51 @@
     <body>
         <div id="home" class="page">
             <h1 id="tassi_play">Tassi Play</h1>
-            
             <button onclick="Lucky.next('#account')">Se connecter</button>
-            <button onclick="Lucky.next('#three')">Thee</button>
+            <button onclick="Lucky.next('#three')">Page 3</button>
         </div>
         <div id="account" class="page">
             <h1 id="mon_compte">Mon Compte</h1>
             <div class="back" onclick="Lucky.prev('#home')">home</div>
-            <div id="wrapper">
-                <div id="scroller">
-            <ul>
+                <ul class="scroller">
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                </ul>
+
+            <h1>Footer</h1>
+        </div>
+        <div id="three" class="page">
+            <h1 id="">Number 3</h1>
+            <div class="back" onclick="Lucky.prev('#home')">home</div>
+            <ul class="scroller">
+                <li>Commande 2</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
                 <li>Commande 1</li>
                 <li>Commande 1</li>
                 <li>Commande 1</li>
@@ -61,12 +95,6 @@
                 <li>Commande 1</li>
                 <li>Commande 1</li>
             </ul>
-                </div>
-            </div>
-        </div>
-        <div id="three" class="page">
-            <h1 id="">Number 3</h1>
-            <div class="back" onclick="Lucky.prev('#home')">home</div>
         </div>
     </body>
 </html>
