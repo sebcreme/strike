@@ -191,6 +191,7 @@ Lucky = {
     onOrientationChangeHandlers: [],
     handlers : {},
     currentSlide: null,
+    storage: window.localStorage,
     //~~~~~~~ SYSTEM ~~~~~~~//
     nextCommand : function(message, args){
         return this.commandQueue.length > 0 ? this.commandQueue.pop() : 'nocommand';
@@ -219,41 +220,13 @@ Lucky = {
     
     locate: function(handler){
         Lucky.handlers['locate'] = handler;
-        if (onMobile) {
+        if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position){
                 handler(position.coords)
             })
         }
-        else {
-            this.geoPicker( handler );
-        }
     },
-    geoPicker: function( handler ){
-        var _this = this;
-        
-        // Open the Google Map window... 
-        // This makes BIG assumptions about the emulator.html page.
-        var jQuery = parent.window.jQuery;
-        var map = jQuery( '#geopicker' );
-        map.attr( "src", "@geopicker" );
-        map.bind("load", function(){
-            var $this = jQuery( this );
-            $this.fadeIn();
-            this.contentWindow.geopicker.setCallback( function( pos ){
-                if( pos == null ){
-                    $this.fadeOut();
-                    return;
-                }
-                
-                Lucky.commandResult('locate', { longitude:pos.b, latitude:pos.c, accuracy:100 });
-                // Hide the map
-                setTimeout(function(){
-                    $this.fadeOut();
-                },400);
-            });
-        });
-    
-    },
+   
     getContacts : function(){
         if (onMobile) this.pushCommand('contacts://dummy?start') ;
         else {

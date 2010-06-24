@@ -1,4 +1,8 @@
-var emulator = {
+//added in emulator
+
+Lucky =null;
+
+emulator = {
     orientationIndex: 3,
     init: function(){
         var _this = this;
@@ -7,6 +11,14 @@ var emulator = {
                 _this.changeOrientation( e.keyCode == 37 ? -1 : 1 );
             }
         });
+        //override Lucky.locate for using the emulator geopicker
+        $('#emulatorContent').load(function(){
+          Lucky = this.contentWindow.Lucky
+          this.contentWindow.Lucky.locate = function(handler){
+            Lucky.handlers['locate'] = handler;
+            parent.window.emulator.geoPicker( handler );
+          }
+        })
     },
     changeOrientation: function( direction ){
         var degrees = [ 90, 180, -90, 0 ];
@@ -32,5 +44,28 @@ var emulator = {
         }
         
         $("#emulatorContent")[0].contentWindow.Lucky.orientationChange( orientation );
-    }
+    },
+    geoPicker: function( handler ){
+          var _this = this;
+          // Open the Google Map window... 
+          var map = jQuery( '#geopicker' );
+          map.attr( "src", "@geopicker" );
+          map.bind("load", function(){
+              var $this = jQuery( this );
+              $this.fadeIn();
+              this.contentWindow.geopicker.setCallback( function( pos ){
+                  if( pos == null ){
+                      $this.fadeOut();
+                      return;
+                  }
+
+                  Lucky.commandResult('locate', { longitude:pos.b, latitude:pos.c, accuracy:100 });
+                  // Hide the map
+                  setTimeout(function(){
+                      $this.fadeOut();
+                  },400);
+              });
+          });
+
+      }
 };
