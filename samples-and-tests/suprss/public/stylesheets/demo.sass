@@ -1,4 +1,4 @@
-!colortheme= green
+!colortheme= #36b8ff
 @import iphone.sass
 h1
     +iphone-header
@@ -15,8 +15,6 @@ h1
     +iphone-list
 body > div  
     +iphone-page
-p
-    +iphone-content
 button
     +iphone-button(black)
     margin: auto
@@ -26,5 +24,12 @@ button
     margin: auto
     display: block
     
+.page
+    min-height: 460px
 #home
     display: block
+
+ul
+    +iphone-list
+li
+    +iphone-list-item

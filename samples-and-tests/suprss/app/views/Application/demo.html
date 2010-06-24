@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
     <head>
         <title>#{get 'title' /}</title>
@@ -7,12 +6,27 @@
         
         <link rel="stylesheet" type="text/css" media="screen" href="@{'public/stylesheets/demo.sass'}">
         <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/lucky.js'}"></script>
+        <script src="@{'public/javascripts/iscroll.js'}" type="text/javascript" charset="utf-8"></script>
         
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         #{meta-iphone-webapp /}
         <script type="text/javascript" charset="utf-8">
-            Lucky.onready(function(){Lucky.show('#account')})
+            Lucky.onready(function(){
+                var myScroll = new iScroll('scroller');
+                Lucky.show('#home')
+                
+            })
         </script>
+        
+        <style type="text/css" media="screen">
+            #wrapper {
+                position:relative;
+                z-index:1;
+                width: 100%;
+                height:200px;
+                overflow:auto;
+            }
+        </style>
         
     </head>
     <body>
@@ -20,15 +34,39 @@
             <h1 id="tassi_play">Tassi Play</h1>
             
             <button onclick="Lucky.next('#account')">Se connecter</button>
+            <button onclick="Lucky.next('#three')">Thee</button>
         </div>
         <div id="account" class="page">
             <h1 id="mon_compte">Mon Compte</h1>
             <div class="back" onclick="Lucky.prev('#home')">home</div>
+            <div id="wrapper">
+                <div id="scroller">
             <ul>
                 <li>Commande 1</li>
                 <li>Commande 1</li>
                 <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
+                <li>Commande 1</li>
             </ul>
+                </div>
+            </div>
+        </div>
+        <div id="three" class="page">
+            <h1 id="">Number 3</h1>
+            <div class="back" onclick="Lucky.prev('#home')">home</div>
         </div>
     </body>
 </html>

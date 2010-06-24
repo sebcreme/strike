@@ -14,17 +14,11 @@ var emulator = {
         if(this.orientationIndex < 0)this.orientationIndex = degrees.length - 1;
         var orientation = degrees[ this.orientationIndex ];
         
-        var container = $("div.emulator");
-        var contents = $("#emulatorContent");
         var elements = $("div.emulator,#emulatorContent");
         elements.removeClass('up down left right');
         switch(orientation){
             case 90:
                 elements.addClass('right');
-                contents.css({
-                    "-webkit-transform": "rotate(90)",
-                    "-webkit-transition:": "-webkit-transform 0.5s linear"
-                })
                 break;
             case -90:
                 elements.addClass('left');
