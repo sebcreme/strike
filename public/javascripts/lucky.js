@@ -2,7 +2,7 @@
 // mini jquery
 window.$ = HTMLElement.prototype.$ = function(selector) {
     if (selector == null) return null
-    var context=this==window?document:this,results=context.querySelectorAll(selector),isId=/^\#[a-zA-Z_\-]*$/;
+    var context=this==window?document:this,results=context.querySelectorAll(selector),isId=/^\#[0-9a-zA-Z_\-]*$/;
     if (isId.test(selector) && results) return results[0]
     else return results
 }
@@ -312,7 +312,7 @@ Lucky = {
     },
     //~~~~~~~ UI ~~~~~~~//
     bindScroller: function(){
-        var scroll = $(Lucky.currentPage + " .scroller");
+        var scroll = $(Lucky.currentPage + " .scrollView");
         if(scroll.length > 0){
             // See if we have already bound the scroller
             if( !$hasClass(scroll[0], "pm_scroll") ){
