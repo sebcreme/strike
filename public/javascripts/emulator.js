@@ -1,7 +1,6 @@
 //added in emulator
 
-Lucky =null;
-
+Lucky = application = null
 emulator = {
     orientationIndex: 3,
     init: function(){
@@ -11,14 +10,16 @@ emulator = {
                 _this.changeOrientation( e.keyCode == 37 ? -1 : 1 );
             }
         });
+        application = $('#emulatorContent')[0].contentWindow
         //override Lucky.locate for using the emulator geopicker
-        $('#emulatorContent').load(function(){
-          Lucky = this.contentWindow.Lucky
-          this.contentWindow.Lucky.locate = function(handler){
+        $(application).load(function(){
+          Lucky = this.Lucky
+          Lucky.locate = function(handler){
             Lucky.handlers['locate'] = handler;
             parent.window.emulator.geoPicker( handler );
           }
         })
+        
     },
     changeOrientation: function( direction ){
         var degrees = [ 90, 180, -90, 0 ];
@@ -58,8 +59,7 @@ emulator = {
                       $this.fadeOut();
                       return;
                   }
-
-                  Lucky.commandResult('locate', { longitude:pos.b, latitude:pos.c, accuracy:100 });
+                  Lucky.commandResult('locate', { latitude:pos.b, longitude:pos.c, accuracy:200 });
                   // Hide the map
                   setTimeout(function(){
                       $this.fadeOut();
@@ -67,5 +67,8 @@ emulator = {
               });
           });
 
+      },
+      clearStorage : function(){
+          application.localStorage.clear()
       }
 };

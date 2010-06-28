@@ -25,10 +25,19 @@
 				map: null,
 				clickTimer: null,
 				onSelect: null,
+				defaultZoom : window.localStorage.getItem('emulator.geopicker.zoom.preference')-0,
+				defaultLocation : window.localStorage.getItem('emulator.geopicker.default.latlng'),
 				setCallback: function( callback ){
 					this.onSelect = callback;
 				},
 				init: function(){
+				    if (!this.defaultZoom) window.localStorage.setItem('emulator.geopicker.zoom.preference', 16)
+				    if (!this.defaultLocation) {
+				        window.localStorage.setItem('emulator.geopicker.default.latlng', '(48.856667,2.350833)')
+			        }
+				    var latlng = /\(([\-0-9.]*)\s*,\s*([\-0-9.]*)\)/.exec(window.localStorage.getItem('emulator.geopicker.default.latlng'))
+				    this.defaultLocation = new google.maps.LatLng(latlng[1]-0, latlng[2]-0)
+                    
 					var _this = this;
 					// Attach event handlers
 					$( "#mapSearch" ).click( function(){ _this.geocodeAddress(); });
@@ -38,10 +47,10 @@
 					});
 					
 					// Set up map
-					var defaultLatLng = new google.maps.LatLng(48.693907, 6.183329);
+				
 					var mapOptions = {
-					  zoom: 8,
-					  center: defaultLatLng,
+					  zoom: this.defaultZoom,
+					  center: this.defaultLocation,
 					  mapTypeId: google.maps.MapTypeId.ROADMAP
 					};
 
@@ -57,9 +66,10 @@
 							// Single click
 							_this.clickTimer = setTimeout( function(){
 								var latlng = obj.latLng;
-					          	if (latlng) {							
+					          	if (latlng) {
+					          	    window.localStorage.setItem('emulator.geopicker.default.latlng', latlng)
 									var marker = new google.maps.Marker({
-									      position: latlng, 
+									      position: latlng,
 									      map: map
 									});
 									if(_this.onSelect)
@@ -68,6 +78,11 @@
 							}, 400);
 						}					
 			        });
+			        google.maps.event.addListener(map, 'zoom_changed', function() {
+                        geopicker.defaultZoom = this.zoom
+                        window.localStorage.setItem('emulator.geopicker.zoom.preference', this.zoom);
+                    });
+                    
 				},
 				
 				geocodeAddress: function(){
@@ -77,6 +92,7 @@
 						geocoder.geocode( { 'address': address}, function(results, status) {
 							if (status == google.maps.GeocoderStatus.OK) {
 								map.setCenter(results[0].geometry.location);
+								window.localStorage.setItem('emulator.geopicker.default.latlng', results[0].geometry.locationlng);
 							} 
 							else {
 								if( status === google.maps.GeocoderStatus.ZERO_RESULTS ){
