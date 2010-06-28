@@ -6,67 +6,106 @@
         
         <link rel="stylesheet" type="text/css" media="screen" href="@{'public/stylesheets/demo.sass'}">
         <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/lucky.js'}"></script>
+        <!--MOVE TO LUCKY - iScroll library-->
         <script src="@{'public/javascripts/iscroll.js'}" type="text/javascript" charset="utf-8"></script>
         
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         #{meta-iphone-webapp /}
         <script type="text/javascript" charset="utf-8">
             Lucky.onready(function(){
-                var myScroll = new iScroll('scroller');
                 Lucky.show('#home')
                 
+                // MOVE TO LUCKY - detect if standalone
+                Lucky.isStandalone = navigator.standalone === true;
+                if(Lucky.isStandalone){
+                    $addClass($('body')[0], "standalone");
+                }
+                
+                // MOVE TO LUCKY - convert ul.listNav elements to links to internal pages
+                $('ul.listNavView li').each(function(el){
+                    var link = el.getElementsByTagName('a')
+                    if( !link || !link[0] || link[0].length === 0 ) return false
+                    var hash = link[0].hash
+                    el.on("click", function(){
+                        // Todo - split class name, look for types
+                        var anim = el.getElementsByTagName('a')[0].className
+                        Lucky[ anim || 'next' ]( hash )
+                    })
+                })
             })
         </script>
         
         <style type="text/css" media="screen">
-            #wrapper {
+            /* MOVE TO LUCKY. Wrapper is for iScroll... the element is added by lucky code in bindScroller */
+            .wrapper {
                 position:relative;
                 z-index:1;
                 width: 100%;
-                height:200px;
+                height:385px;
                 overflow:auto;
             }
+            
+            /* MOVE TO LUCKY. Using links inside li items to do list-based navigation */
+            ul.listNavView a {
+                text-decoration:none;
+                color: #333;
+            }
+
         </style>
         
     </head>
     <body>
         <div id="home" class="page">
-            <h1 id="tassi_play">Tassi Play</h1>
-            
-            <button onclick="Lucky.next('#account')">Se connecter</button>
-            <button onclick="Lucky.next('#three')">Thee</button>
-        </div>
-        <div id="account" class="page">
-            <h1 id="mon_compte">Mon Compte</h1>
-            <div class="back" onclick="Lucky.prev('#home')">home</div>
-            <div id="wrapper">
-                <div id="scroller">
-            <ul>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
-                <li>Commande 1</li>
+            <h1>Play Mobile</h1>
+            <ul class="listNavView">
+                <li><a href="#scrollinglist">Scrolling list</a></li>
+                <li><a href="#transitionTo" class="next">Slide left</a></li>
+                <li><a href="#transitionTo" class="prev">Slide right</a></li>
+                <li><a href="#transitionTo" class="fade">Fade</a></li>
+                <li><a href="#transitionTo" class="flip">Flip</a></li>
+                <li><a href="#transitionTo" class="rotateLeft">Rotate left</a></li>
+                <li><a href="#transitionTo" class="rotateRight">Rotate right</a></li>
+                <li><a href="#transitionTo" class="swap">Swap</a></li>
             </ul>
-                </div>
-            </div>
+            <button style="float:left" onclick="Lucky.rotateLeft('#transitionTo')">Flip</button>
         </div>
-        <div id="three" class="page">
-            <h1 id="">Number 3</h1>
+        <div id="scrollinglist" class="page">
+            <h1 id="mon_compte">Scrolling list</h1>
             <div class="back" onclick="Lucky.prev('#home')">home</div>
+                <ul class="scrollView listNavView">
+                    <li><a href="#transitionTo">Commande 1</a></li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                    <li>Commande 1</li>
+                </ul>
+            <h1>Footer</h1>
+        </div>
+        <div id="transitionTo">
+            <h1>Done!</h1>
+            <div class="back" onclick="Lucky.prev('#home')">home</div>
+            <p>
+                Thanks for coming.
+            </p>
         </div>
     </body>
 </html>

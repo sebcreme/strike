@@ -1,4 +1,4 @@
-!colortheme= #36b8ff
+!colortheme= #2f2f2f
 @import iphone.sass
 h1
     +iphone-header
@@ -16,16 +16,15 @@ h1
 body > div  
     +iphone-page
 button
-    +iphone-button(black)
+    //+iphone-button(black)
+    +fancy-button(!colortheme)
     margin: auto
     display: block
 .ok
     +iphone-button(blue)
     margin: auto
     display: block
-    
-.page
-    min-height: 460px
+
 #home
     display: block
 

@@ -15,14 +15,39 @@
 !colordark = darken_percent(!colortheme, 30%)
 !colorlight = lighten_percent(!colortheme, 50%)
 
-body
-    font: 14px "Lucida Grande", sans-serif
+*
     margin: 0
     padding: 0
+
+body
+    background: #000
+    font: 14px Hevetica, "Lucida Grande", sans-serif
+    overflow-x: hidden
+
     -webkit-tap-highlight-color: rgba(0,0,0,0)
     -webkit-perspective: 800
-    background: #000
-    font-family: Helvetica
+    -webkit-user-select: none
+    -webkit-text-size-adjust: none
+    -webkit-transform-style: preserve-3d
+    
+    > *
+        display: none
+        position: absolute
+        left: 0
+        width: 100%
+        min-height: 420px !important
+        -webkit-backface-visibility: hidden
+        -webkit-box-sizing: border-box
+        -webkit-transform: translate3d(0,0,0) rotate(0) scale(1)
+        
+.standalone > *
+    min-height: 460px !important
+
+.standalone.black-translucent > *
+    min-height: 480px !important
+
+.landscape > *
+    min-height: 320px
     
 =iphone-header(!colorheader = !colortheme, !fontsize = "15pt")
     !colorheaderdark = darken_percent(!colorheader, 30%)
@@ -105,9 +130,11 @@ body
     margin: 0
     padding: 0
     background: white
+    font: bold 17px Helvetica
+    
 =iphone-list-item
-    border-bottom: 1px solid #E0E0E0
-    padding: 8px 20px 8px 10px
+    border-top: 1px solid #B4B4B4
+    padding: 10px 10px 10px 10px
     background: url(/public/images/mobile/chevron.png) no-repeat 300px 14px
     &.selected
         background: #194FDB url(/public/images/mobile/chevron-white.png) no-repeat 300px 14px

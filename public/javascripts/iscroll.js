@@ -15,7 +15,6 @@
 function iScroll (el, options) {
 	this.element = typeof el == 'object' ? el : document.getElementById(el);
 	this.wrapper = this.element.parentNode;
-
 	var style = '-webkit-transition-property:-webkit-transform;-webkit-transition-timing-function:cubic-bezier(0,0,0.25,1);-webkit-transition-duration:0;-webkit-transform:' + (has3d ? 'translate3d(0,0,0)' : 'translate(0,0)');
 	this.element.setAttribute('style', style);
 

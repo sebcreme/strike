@@ -2,7 +2,7 @@
 // mini jquery
 window.$ = HTMLElement.prototype.$ = function(selector) {
     if (selector == null) return null
-    var context=this==window?document:this,results=context.querySelectorAll(selector),isId=/^\#[a-zA-Z_\-]*$/;
+    var context=this==window?document:this,results=context.querySelectorAll(selector),isId=/^\#[0-9a-zA-Z_\-]*$/;
     if (isId.test(selector) && results) return results[0]
     else return results
 }
@@ -192,6 +192,7 @@ Lucky = {
     handlers : {},
     currentSlide: null,
     storage: window.localStorage,
+    currentScroll: null,
     //~~~~~~~ SYSTEM ~~~~~~~//
     nextCommand : function(message, args){
         return this.commandQueue.length > 0 ? this.commandQueue.pop() : 'nocommand';
@@ -283,6 +284,29 @@ Lucky = {
         this.pushCommand('orientationChange');
     },
     //~~~~~~~ UI ~~~~~~~//
+    bindScroller: function(){
+        var scroll = $(Lucky.currentPage + " .scrollView");
+        if(scroll.length > 0){
+            // See if we have already bound the scroller
+            if( !$hasClass(scroll[0], "pm_scroll") ){
+                // No, so wrap it and bind it...
+                var wrapper = document.createElement('div'); 
+                $addClass(wrapper, "wrapper");
+                var cloneScroll = scroll[0].cloneNode( true );
+                $addClass(cloneScroll, "pm_scroll");
+                wrapper.appendChild( cloneScroll ); 
+                scroll[0].parentNode.replaceChild(wrapper, scroll[0]);
+                
+                Lucky.currentScroll = new iScroll( cloneScroll );
+            }
+            else{
+                // Just swap the wrapper to the current page, and refresh
+                Lucky.currentScroll.wrapper = scroll[0].parentNode;
+                Lucky.currentScroll.refresh();
+            }
+        }    
+    },
+    
     show: function(page) {
         Lucky._cleanPage(page);
         new Transition('none', 0.35, 'linear').perform($(page), $(Lucky.currentPage), false);
@@ -305,6 +329,7 @@ Lucky = {
         Lucky._cleanPage(page);
         new Transition('push', 0.35, 'ease').perform($(page), $(Lucky.currentPage), false);
         Lucky.currentPage = page;
+        Lucky.bindScroller();
     },
     
     prev: function(page) {
