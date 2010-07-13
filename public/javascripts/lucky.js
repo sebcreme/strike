@@ -55,9 +55,10 @@ $ajax = function(method, url, callback){
     var params = method.params
     var async = method.async === undefined ? true : false
     
-    if (!method instanceof String){
-         url = method.url
+    if (method.constructor != String){
+        url = method.url
         callback = method.success
+        method = method.method
     }
     if(!error) {
         error = function(e){
@@ -82,7 +83,7 @@ $ajax = function(method, url, callback){
                 error(this.status)
             }
     }
-    req.send()
+    req.send(params)
 }
 
 // Simple JavaScript Templating
