@@ -1,7 +1,7 @@
 Lucky.onready(function(){suprss.init()});
 suprss = {
     init : function(){
-        
+
         // Temporary test for emulator rotation
         Lucky.onorientationchange(function( orientation ){
             console.log( orientation )

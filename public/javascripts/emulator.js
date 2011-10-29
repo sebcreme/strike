@@ -19,14 +19,14 @@ emulator = {
             parent.window.emulator.geoPicker( handler );
           }
         })
-        
+
     },
     changeOrientation: function( direction ){
         var degrees = [ 90, 180, -90, 0 ];
         this.orientationIndex = ( this.orientationIndex + direction ) % degrees.length;
         if(this.orientationIndex < 0)this.orientationIndex = degrees.length - 1;
         var orientation = degrees[ this.orientationIndex ];
-        
+
         var elements = $("div.emulator,#emulatorContent");
         elements.removeClass('up down left right');
         switch(orientation){
@@ -43,12 +43,12 @@ emulator = {
                 elements.addClass('down');
                 break;
         }
-        
+
         $("#emulatorContent")[0].contentWindow.Lucky.orientationChange( orientation );
     },
     geoPicker: function( handler ){
           var _this = this;
-          // Open the Google Map window... 
+          // Open the Google Map window...
           var map = jQuery( '#geopicker' );
           map.attr( "src", "@geopicker" );
           map.bind("load", function(){

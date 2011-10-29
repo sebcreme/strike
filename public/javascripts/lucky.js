@@ -16,7 +16,7 @@ NodeList.prototype.each = each;
 $hasClass = function(element, className) {
     if (element) {
         var elementClassName = element.className;
-        return (elementClassName.length > 0 && (elementClassName == className || 
+        return (elementClassName.length > 0 && (elementClassName == className ||
             new RegExp("(^|\\s)" + className + "(\\s|$)").test(elementClassName)));
     }
 }
@@ -54,7 +54,7 @@ $ajax = function(method, url, callback){
     var error = method.error
     var params = method.params
     var async = method.async === undefined ? true : false
-    
+
     if (method.constructor != String){
         url = method.url
         callback = method.success
@@ -101,10 +101,10 @@ this.tmpl = function tmpl(str, data) {
           cache[str] = tmpl(document.getElementById(str).innerHTML)
         }
         }catch (error){console.log('error when rendering #'+str+' :: '+error.message)}
-      
-      fn = cache[str] 
+
+      fn = cache[str]
     } else {
-      fn = 
+      fn =
       // Generate a reusable function that will serve as a template
       // generator (and which will be cached).
     new Function("obj",
@@ -219,7 +219,7 @@ Lucky = {
     setMarkers: function(def) {
         this.pushCommand('setMarkers://dummy?');
     },
-    
+
     locate: function(handler){
         Lucky.handlers['locate'] = handler;
         if (navigator.geolocation) {
@@ -228,7 +228,7 @@ Lucky = {
             })
         }
     },
-   
+
     getContacts : function(){
         if (onMobile) this.pushCommand('contacts://dummy?start') ;
         else {
@@ -239,7 +239,7 @@ Lucky = {
         if (onMobile)this.pushCommand('locate://dummy?stop');
         else console.log("Stopping Localisation : no implemented in webkit mode");
     },
-    
+
     lang: function(handler) {
         this.handlers['lang'] = handler;
         if (onMobile){
@@ -262,7 +262,7 @@ Lucky = {
             }
         });
     },
-    
+
     getMessage: function(key) {
         return lucky_messages[key];
     },
@@ -285,80 +285,80 @@ Lucky = {
         this.pushCommand('orientationChange');
     },
     //~~~~~~~ UI ~~~~~~~//
-    
+
     show: function(page) {
         Lucky._cleanPage(page);
         new Transition('none', 0.35, 'linear').perform($(page), $(Lucky.currentPage), false);
         Lucky.currentPage = page;
     },
-    
+
     flip: function(page) {
         Lucky._cleanPage(page);
         new Transition('flip', 0.65, 'linear').perform($(page), $(Lucky.currentPage), false);
         Lucky.currentPage = page;
     },
-    
+
     unflip: function(page) {
         Lucky._cleanPage(page);
         new Transition('flip', 0.65, 'linear').perform($(page), $(Lucky.currentPage), true);
         Lucky.currentPage = page;
     },
-    
+
     next: function(page) {
         Lucky._cleanPage(page);
         new Transition('push', 0.35, 'ease').perform($(page), $(Lucky.currentPage), false);
         Lucky.currentPage = page;
     },
-    
+
     prev: function(page) {
         Lucky._cleanPage(page);
         var transition = new Transition('push', 0.35, 'ease');
-        transition.perform($(page), $(Lucky.currentPage), true);            
+        transition.perform($(page), $(Lucky.currentPage), true);
         Lucky.currentPage = page;
-        
-        Events.fire("Page_Transition", page); 
+
+        Events.fire("Page_Transition", page);
     },
-    
+
     rotateRight: function(page) {
         Lucky._cleanPage(page);
         new Transition('cube', 0.55, 'ease').perform($(page), $(Lucky.currentPage), false);
         Lucky.currentPage = page;
     },
-    
+
     rotateLeft: function(page) {
         Lucky._cleanPage(page);
         new Transition('cube', 0.55, 'ease').perform($(page), $(Lucky.currentPage), true);
         Lucky.currentPage = page;
     },
-    
+
     fade: function(page) {
         Lucky._cleanPage(page);
         new Transition('dissolve', 0.35, 'linear').perform($(page), $(Lucky.currentPage), false);
         Lucky.currentPage = page;
     },
-    
+
     swap: function(page) {
         Lucky._cleanPage(page);
         new Transition('swap', 0.55, 'linear').perform($(page), $(Lucky.currentPage), false);
         Lucky.currentPage = page;
     },
-    
+
     _cleanPage: function(page) {
         // Clean lists
         $(page).querySelectorAll('.list li').each(function(it) {
             $removeClass(it, 'selected');
         });
     },
-    
+
     currentPanel: null,
-    
+
     openPanel: function(page) {
         var transition = new Transition('slide', 0.35, 'ease');
         transition.direction = 'bottom-top';
         transition.perform($(page), $(Lucky.currentPage), false);
-        Lucky.currentPanel = page;      
+        Lucky.currentPanel = page;
     },
-    
+
     closePanel: function() {
         var transition = new Transition('slide', 0.35, 'ease');
         transition.direction = 'bottom-top';
@@ -366,11 +366,11 @@ Lucky = {
         setTimeout(function() {
             $(Lucky.currentPanel).style.display = '';
             Lucky.currentPanel = null;
-        }, 500);        
+        }, 500);
     },
-    
+
     currentOverlay: null,
-    
+
     showOverlay: function(page, opacity) {
         var el = $(page);
         el.style.position = 'absolute';
@@ -384,8 +384,8 @@ Lucky = {
             el.style.opacity = opacity ? opacity : '1';
         }, 0);
         Lucky.currentOverlay = page;
-    },  
-    
+    },
+
     hideOverlay: function(now) {
         var el = $(Lucky.currentOverlay);
         var onend = function() {
@@ -396,7 +396,7 @@ Lucky = {
         if(now) {
             el.style.display = 'none';
         } else {
-            el.addEventListener('webkitTransitionEnd', onend, false);           
+            el.addEventListener('webkitTransitionEnd', onend, false);
         }
         el.style.opacity = '0';
     },
@@ -411,19 +411,19 @@ Lucky = {
                 }
                 if(node.tagName == 'LI' && $hasClass(node.parentNode, 'list')) {
                     node.parentNode.querySelectorAll('li').each(function(it) {
-                        $removeClass(it, 'selected');                       
+                        $removeClass(it, 'selected');
                     });
                     $addClass(node, 'selected')
                     e.preventDefault();
                     break;
-                }   
+                }
             }
             it++;
             node = node.parentNode;
-        }   
+        }
     },
-    
-    _touchEnd: function(e) {    
+
+    _touchEnd: function(e) {
         var node = e.target;
         var it = 0;
         while(node != null && it < 10) {
@@ -431,11 +431,11 @@ Lucky = {
                 if($hasClass(node, 'button') || $hasClass(node, 'submit-button')) {
                     $removeClass(node, 'selected')
                     break;
-                }   
+                }
             }
             it++;
             node = node.parentNode;
-        }   
+        }
     },
     fakeTouch : function(nodeElement){
         if (!onMobile){
@@ -492,7 +492,7 @@ Transition.EASE_IN_TIMING = 'ease-in';
 Transition.EASE_OUT_TIMING = 'ease-out';
 Transition.EASE_IN_OUT_TIMING = 'ease-in-out';
 
-// Directions are only supported for certain transition types.  
+// Directions are only supported for certain transition types.
 // Push and Slide support all four directions.
 // Flip, Cube, Swap and Revolve support only Right-to-left and Left-to-right
 Transition.RIGHT_TO_LEFT_DIRECTION = 'right-left';
@@ -507,7 +507,7 @@ Transition.BOTTOM_TO_TOP_DIRECTION = 'bottom-top';
 // duration     - a float in seconds
 // timing       - a valid CSS animation timing function value. For example, 'linear' or 'ease-in-out'
 //
-// After construction, you can also assign one of the direction constants above to the "direction" property 
+// After construction, you can also assign one of the direction constants above to the "direction" property
 // to set the transition direction for transition types that support different directions (see comments above.)
 //
 function Transition(type, duration, timing)
@@ -515,7 +515,7 @@ function Transition(type, duration, timing)
     this.type = type;
     this.setDuration(duration);
     this.timing = timing;
-    
+
     this._useTransforms = Transition.areTransformsSupported();
 }
 
@@ -564,7 +564,7 @@ Transition.prototype.perform = function(newView, oldView, isReverse)
         // Got to execute in the same container
         if (oldView.parentNode != containerElement) return;
         if (oldView == newView) return;
-        
+
         containerElement = oldView.parentNode; // In case there is a push container
         if (containerElement.getAttribute('apple-transition-flip-push-container')) {
             this._pushContainer = containerElement;
@@ -572,9 +572,9 @@ Transition.prototype.perform = function(newView, oldView, isReverse)
         }
         else {
             // Clear any residue push container for flip
-            this._pushContainer = null;            
+            this._pushContainer = null;
         }
-        
+
         var oldStyle = oldView.style;
         // Reset some settings
         oldStyle.zIndex = 0;
@@ -590,14 +590,14 @@ Transition.prototype.perform = function(newView, oldView, isReverse)
             oldStyle.webkitTransform = this._translateOp(0, 0);
             oldStyle.webkitBackfaceVisibility = '';
         }
-        
+
         if (!this.type || this.type == Transition.NONE_TYPE || !this._useTransforms) {
             if ((this.type != Transition.FADE_TYPE) && (this.type != Transition.SLIDE_TYPE) || isReverse) {
                 oldStyle.display = 'none';
             }
         }
     }
-    
+
     // Make sure that container is constraining the transitions for overflow content
     containerElement.style.overflow = 'hidden';
     var computedStyle = document.defaultView.getComputedStyle(containerElement, null);
@@ -605,7 +605,7 @@ Transition.prototype.perform = function(newView, oldView, isReverse)
         // Assume 'static' since we don't support 'fixed'. 'relative' is less obtrusive then.
         containerElement.style.position = 'relative';
     }
-    
+
     var newStyle = newView.style;
     if (this._useTransforms) {
         // Reset
@@ -613,11 +613,11 @@ Transition.prototype.perform = function(newView, oldView, isReverse)
         // This also makes sure that we start with an identity matrix to avoid initial performance problem
         newStyle.webkitTransform = this._translateOp(0, 0);
         newStyle.webkitBackfaceVisibility = '';
-        
+
         // This overcomes a clipping problem
         containerElement.parentNode.style.zIndex = 0;
     }
-    
+
     // Before the new view comes in, remove any previously hard-coded inline value that would have crept in when it was transited out. Because the transition is happening in a container and we are reinstating the position to be 'relative', the new view will resize itself to react to orientation changes (if any).
     newStyle.width = null;
     newStyle.position = 'relative';
@@ -633,21 +633,21 @@ Transition.prototype.perform = function(newView, oldView, isReverse)
         this._previousNewStyleOpacity = newStyle.opacity;
         // Normally, the old view disappears as part of transition. Some transitions like slide/fade requires the old view to be there though.
         this._shouldHideOldView = true;
-        
-        if (oldView) {                        
-            // If the new view is too short to fit the whole view port height, this will even show the Safari toolbar before the transition happens, 
+
+        if (oldView) {
+            // If the new view is too short to fit the whole view port height, this will even show the Safari toolbar before the transition happens,
             oldStyle.position = 'absolute';
-            
+
             this._preventEventsInContainer();
-            
+
             this._originalContainerElementHeight = containerElement.style.height;
             containerElement.style.height = Math.max(oldView.offsetHeight, newView.offsetHeight) + 'px';
         }
-        
+
         if (this._pushContainer && (this.type != Transition.FLIP_TYPE)) {
             this._clearPushContainer();
         }
-        
+
         if (this.type == Transition.DISSOLVE_TYPE || this.type == Transition.FADE_TYPE) {
             this._performFadeTransition(isReverse);
         }
@@ -680,7 +680,7 @@ Transition.areTransformsSupported = function () {
         style.setProperty('-webkit-transform', 'inherit');
         Transition._areTransformsSupported = style.getPropertyValue('-webkit-transform') == 'inherit';
          */
-        
+
         // But currently, we are using the following test which succeeds on the iPhone but not on the desktop.
         Transition._areTransformsSupported = (window.WebKitCSSMatrix ? true : false);
     }
@@ -788,9 +788,9 @@ Transition.prototype.handleEvent = function(event)
 Transition.prototype._preventEventsInContainer = function()
 {
     if (!this._maskContainerElement) return;
-    
+
     if (this._mask) this._maskContainerElement.removeChild(this._mask);
-    
+
     this._mask = document.createElement("div");
     this._mask.setAttribute('style', 'position: absolute; top: 0; left: 0; z-index: 1000;');
     this._mask.style.width = this._maskContainerElement.offsetWidth + 'px';
@@ -803,14 +803,14 @@ Transition.prototype._clearPushContainer = function()
 {
     if (this._pushContainer) {
         this._containerElement.removeChild(this._pushContainer);
-    
+
         var children = this._pushContainer.childNodes;
         for (var i=children.length-1; i>=0; i--) {
             if (children[i] != this._mask) {
                 this._containerElement.appendChild(children[i]);
             }
         }
-        
+
         delete this._pushContainer;
     }
 }
@@ -822,12 +822,12 @@ Transition.prototype._transitionEndedHelper = function()
     }
     this._newView.style.zIndex = 1;
     this._newView.style.opacity = this._previousNewStyleOpacity;
-    
+
     if (this._maskContainerElement && this._mask) {
         this._maskContainerElement.removeChild(this._mask);
         this._mask = null;
     }
-    
+
     this._containerElement.style.height = this._originalContainerElementHeight;
 }
 
@@ -836,7 +836,7 @@ Transition.prototype._transitionEnded = function(event)
 {
     if (!this._checkedForEnded) {
         this._transitionEndedHelper();
-        
+
         if (this.type == Transition.CUBE_TYPE) {
             this._containerElement.style.webkitPerspective = '';
             this._oldView.style.webkitTransformOrigin = '50% 50%';
@@ -845,7 +845,7 @@ Transition.prototype._transitionEnded = function(event)
 
         this._oldView.style.opacity = '1';
         this._newView.style.opacity = '1';
-        
+
         this._checkedForEnded = true;
     }
 }
@@ -885,12 +885,12 @@ Transition.prototype._animationEnded = function(event)
 {
     if (!this._checkedForEnded) {
         this._animationEndedHelper();
-        
+
         if (this.type == Transition.FLIP_TYPE) {
             Transition._removeClassName(this._containerElement, 'dashcode-transition-flip-container');
             Transition._removeClassName(this._flipContainer, 'dashcode-transition-flip-container-pushback');
         }
-        
+
         this._checkedForEnded = true;
     }
 }
@@ -910,14 +910,14 @@ Transition.prototype._performFadeTransition = function(isReverse)
         else if (isDissolve) {
             newStyle.opacity = 0;
         }
-    
+
         var durationString = this._getDurationStringForFadingEffect(this.getDuration());
         Transition._addDelayedTransitionCallback(function() {
             if (isDissolve || (isSimpleFade && isReverse)) {
                 _self._setupTransition(oldStyle, 'opacity', durationString, _self.timing, 'opacity', 0);
             }
             else {
-                _self._shouldHideOldView = false; 
+                _self._shouldHideOldView = false;
             }
 
             if (isDissolve || (isSimpleFade && !isReverse)) {
@@ -925,7 +925,7 @@ Transition.prototype._performFadeTransition = function(isReverse)
                 _self._setupTransition(newStyle, 'opacity', durationString, _self.timing, 'opacity', _self._previousNewStyleOpacity);
             }
         });
-        
+
         // Register a callback for the end of the animation for clean up and/or resets
         this._newView.addEventListener('webkitTransitionEnd', this, false);
     }
@@ -940,7 +940,7 @@ Transition.prototype._performPushOrSlideTransition = function(isReverse)
         var isPush = this.type == Transition.PUSH_TYPE;
         var isSlide = this.type == Transition.SLIDE_TYPE;
         var transformX = true;
-        
+
         var factor = isReverse ? -1 : 1;
         var dimension = parseInt(this._containerWidth);
         if (this.direction == Transition.BOTTOM_TO_TOP_DIRECTION) {
@@ -951,7 +951,7 @@ Transition.prototype._performPushOrSlideTransition = function(isReverse)
             dimension = isReverse ? this._oldView.offsetHeight : this._newView.offsetHeight;
         }
         if (this.direction == Transition.LEFT_TO_RIGHT_DIRECTION || this.direction == Transition.TOP_TO_BOTTOM_DIRECTION) factor *= -1;
-        
+
         if (isPush || (isSlide && !isReverse)) {
             newStyle.webkitTransitionProperty = 'none'; // disable
             var transformOp;
@@ -962,10 +962,10 @@ Transition.prototype._performPushOrSlideTransition = function(isReverse)
             }
             newStyle.webkitTransform = transformOp;
         }
-        
+
         Transition._addDelayedTransitionCallback(function() {
             var durationString = _self._getDurationString();
-            
+
             if (isPush || (isSlide && isReverse)) {
                 var transformOp;
                 if (transformX) {
@@ -976,14 +976,14 @@ Transition.prototype._performPushOrSlideTransition = function(isReverse)
                 _self._setupTransition(oldStyle, '-webkit-transform', durationString, _self.timing, 'webkitTransform', transformOp);
             }
             else {
-                _self._shouldHideOldView = false; 
+                _self._shouldHideOldView = false;
             }
-            
+
             if (isPush || (isSlide && !isReverse)) {
                 _self._setupTransition(newStyle, '-webkit-transform', durationString, _self.timing, 'webkitTransform', _self._translateOp(0, 0));
             }
         });
-        
+
         // Register a callback for the end of the animation for clean up and/or resets
         this._newView.addEventListener('webkitTransitionEnd', this, false);
     }
@@ -995,7 +995,7 @@ Transition.prototype._performFlipTransition = function(isReverse)
         // Using Animation
         var newStyle = this._newView.style;
         var oldStyle = this._oldView.style;
-        
+
         var dimension = parseInt(this._containerWidth);
         if (dimension != 320) {
             if (Transition._containerFlipTranslateZStyle === undefined) {
@@ -1011,7 +1011,7 @@ Transition.prototype._performFlipTransition = function(isReverse)
         if (Transition._containerFlipTranslateZStyle) {
             Transition._containerFlipTranslateZStyle.webkitTransform = 'translateZ(' + -1*dimension/2 + 'px)';
         }
-        
+
         // Creating a dynamic container to make flip smoother
         if (!this._pushContainer) {
             this._pushContainer = document.createElement('div');
@@ -1019,7 +1019,7 @@ Transition.prototype._performFlipTransition = function(isReverse)
             this._pushContainer.setAttribute('apple-transition-flip-push-container', 'true');
             // Spec says that overflow:hidden and preserve-3d don't mix.
             this._pushContainer.setAttribute('style', 'position: relative; top: 0; left: 0; overflow: visible; z-index: 0; -webkit-transform-style: preserve-3d;');
-            
+
             var children = this._containerElement.childNodes;
             for (var i=children.length-1; i>=0; i--) {
                 if (children[i] != this._mask) {
@@ -1033,13 +1033,13 @@ Transition.prototype._performFlipTransition = function(isReverse)
             this._containerElement.removeChild(this._pushContainer);
             this._containerElement.appendChild(this._pushContainer);
         }
-        
+
         var durationString = this._getDurationString();
-        
+
         var direction = this.direction;
         if (direction != Transition.RIGHT_TO_LEFT_DIRECTION && direction != Transition.LEFT_TO_RIGHT_DIRECTION) direction = Transition.RIGHT_TO_LEFT_DIRECTION;
         var fromRight = ((direction == Transition.RIGHT_TO_LEFT_DIRECTION) && !isReverse) || ((direction == Transition.LEFT_TO_RIGHT_DIRECTION) && isReverse);
-        
+
         oldStyle.webkitAnimationDuration = durationString;
         oldStyle.webkitAnimationTimingFunction = this.timing;
         var oldViewAnimationName = fromRight ? 'dashcode-transition-flip-right-old-view' : 'dashcode-transition-flip-left-old-view';
@@ -1048,13 +1048,13 @@ Transition.prototype._performFlipTransition = function(isReverse)
         newStyle.webkitAnimationTimingFunction = this.timing;
         var newViewAnimationName = fromRight ? 'dashcode-transition-flip-right-new-view' : 'dashcode-transition-flip-left-new-view';
         Transition._addClassName(this._newView, newViewAnimationName);
-        
+
         this._pushContainer.style.webkitAnimationDuration = durationString
         this._pushContainer.style.webkitAnimationTimingFunction = this.timing;
         Transition._addClassName(this._pushContainer, 'dashcode-transition-flip-container-pushback');
         this._containerElement.style.webkitAnimationDuration = durationString
         this._containerElement.style.webkitAnimationTimingFunction = this.timing;
-        Transition._addClassName(this._containerElement, 'dashcode-transition-flip-container');        
+        Transition._addClassName(this._containerElement, 'dashcode-transition-flip-container');
 
         // Register a callback for the end of the animation for clean up
         this._containerElement.addEventListener('webkitAnimationEnd', this, false);
@@ -1069,31 +1069,31 @@ Transition.prototype._performCubeTransition = function(isReverse)
         var _self = this;
         var newStyle = this._newView.style;
         var oldStyle = this._oldView.style;
-        
+
         var durationString = this._getDurationString();
         var direction = this.direction;
         if (direction != Transition.RIGHT_TO_LEFT_DIRECTION && direction != Transition.LEFT_TO_RIGHT_DIRECTION) direction = Transition.RIGHT_TO_LEFT_DIRECTION;
         var fromRight = ((direction == Transition.RIGHT_TO_LEFT_DIRECTION) && !isReverse) || ((direction == Transition.LEFT_TO_RIGHT_DIRECTION) && isReverse);
-        
+
         this._containerElement.style.webkitPerspective = '800';
         oldStyle.webkitBackfaceVisibility = 'hidden';
         oldStyle.webkitTransformOrigin = fromRight ? '100% 50%' : '0% 50%';
         newStyle.webkitBackfaceVisibility = 'hidden';
         newStyle.webkitTransformOrigin = fromRight ? '0% 50%' : '100% 50%';
-        
+
         var factor = fromRight ? 1 : -1;
         var dimension = parseInt(this._containerWidth);
-        
+
         newStyle.webkitTransitionProperty = 'none'; // disable
         newStyle.webkitTransform = _self._rotateOp('Y', factor*90) + ' translateZ(' + dimension + 'px)';
-                
+
         Transition._addDelayedTransitionCallback(function() {
             var durationString = _self._getDurationString();
-            
+
             _self._setupTransition(oldStyle, '-webkit-transform', durationString, _self.timing, 'webkitTransform', _self._rotateOp('Y', factor*-90) + ' translateZ(' + dimension + 'px)');
             _self._setupTransition(newStyle, '-webkit-transform', durationString, _self.timing, 'webkitTransform', 'rotateY(0deg) translateZ(0px)');
         });
-        
+
         // Register a callback for the end of the animation for clean up and/or resets
         this._newView.addEventListener('webkitTransitionEnd', this, false);
     }
@@ -1105,13 +1105,13 @@ Transition.prototype._performSwapTransition = function(isReverse)
         // Using Animation
         var newStyle = this._newView.style;
         var oldStyle = this._oldView.style;
-        
+
         var durationString = this._getDurationString();
-        
+
         var direction = this.direction;
         if (direction != Transition.RIGHT_TO_LEFT_DIRECTION && direction != Transition.LEFT_TO_RIGHT_DIRECTION) direction = Transition.RIGHT_TO_LEFT_DIRECTION;
         var fromRight = ((direction == Transition.RIGHT_TO_LEFT_DIRECTION) && !isReverse) || ((direction == Transition.LEFT_TO_RIGHT_DIRECTION) && isReverse);
-        
+
         oldStyle.webkitAnimationDuration = durationString;
         oldStyle.webkitAnimationTimingFunction = this.timing;
         var oldViewAnimationName = fromRight ? 'dashcode-transition-swap-right-old-view' : 'dashcode-transition-swap-left-old-view';
@@ -1134,15 +1134,15 @@ Transition.prototype._performRevolveTransition = function(isReverse)
         // Using Animation
         var newStyle = this._newView.style;
         var oldStyle = this._oldView.style;
-        
+
         var durationString = this._getDurationString();
-        
+
         oldStyle.webkitAnimationDuration = durationString;
         oldStyle.webkitAnimationTimingFunction = this.timing;
         var oldViewAnimationName;
         var direction = this.direction;
         if (direction != Transition.RIGHT_TO_LEFT_DIRECTION && direction != Transition.LEFT_TO_RIGHT_DIRECTION) direction = Transition.RIGHT_TO_LEFT_DIRECTION;
-        
+
         if (direction == Transition.RIGHT_TO_LEFT_DIRECTION) {
             oldViewAnimationName = isReverse ? 'dashcode-transition-revolve-right-old-view' : 'dashcode-transition-revolve-right-reverse-old-view';
         }
@@ -1179,7 +1179,7 @@ Transition._hasClassName = function(element, className)
 {
     if (element) {
         var elementClassName = element.className;
-        return (elementClassName.length > 0 && (elementClassName == className || 
+        return (elementClassName.length > 0 && (elementClassName == className ||
             new RegExp("(^|\\s)" + className + "(\\s|$)").test(elementClassName)));
     }
 }

@@ -5,16 +5,16 @@ Welcome to Play! Module. Ready to make stuf for your fingers ?
 h1. Some tricks
 
 * add iPhone/iPod meta for handling zoom, screen size.
-in main.html : 
+in main.html :
 
-bc. 
+bc.
 #{meta-iphone-webapp /}
 
 * add javascript lucky library
 
-bc. <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/lucky.js'}"></script> 
+bc. <script type="text/javascript" charset="utf-8" src="@{'public/javascripts/lucky.js'}"></script>
 
-* add init hook 
+* add init hook
 
 bc. Lucky.onready(function(){
   alert('toto')
@@ -26,7 +26,7 @@ We are trying to describe what this mobile module can do
 
 h3. Development
 
-h4. Day to day development 
+h4. Day to day development
 
 This module should help any developpers to make a web mobile application
 
@@ -40,11 +40,11 @@ This module should help any developpers to make a web mobile application
 h4. Continous integration
 
     * provide unit and functionnal testing for the application
-    
+
 h3. Production
 
 This module will bring a production mode for managing
 
     * file size: compression of css/html/images in 1 file
     * application cache
-    
+

@@ -8,10 +8,10 @@ public class Application extends Controller {
         render();
     }
     public static void rss(String url) {
-       
+
         render();
     }
-    
+
     public static void demo() {
         render();
     }
