@@ -48,6 +48,7 @@ function css(prop, value)
     else
         return window.getComputedStyle(this, null)[prop]
 }
+//test
 HTMLElement.prototype.css = css;
 
 $ajax = function(method, url, callback){
