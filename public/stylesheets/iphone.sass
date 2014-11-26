@@ -29,7 +29,7 @@ body
     -webkit-user-select: none
     -webkit-text-size-adjust: none
     -webkit-transform-style: preserve-3d
-    
+
     > *
         display: none
         position: absolute
@@ -39,7 +39,7 @@ body
         -webkit-backface-visibility: hidden
         -webkit-box-sizing: border-box
         -webkit-transform: translate3d(0,0,0) rotate(0) scale(1)
-        
+
 .standalone > *
     min-height: 460px !important
 
@@ -48,7 +48,7 @@ body
 
 .landscape > *
     min-height: 320px
-    
+
 =iphone-header(!colorheader = !colortheme, !fontsize = "15pt")
     !colorheaderdark = darken_percent(!colorheader, 30%)
     +fancy-gradient(!colorheader, !colorheaderdark)
@@ -64,7 +64,7 @@ body
     border-bottom: 1px solid #2d3642
     +text-shadow(rgba(0, 0, 0, 0.6), 0px, -1px, 0px)
     +ellipsis
-  
+
 =page-title
     color= !colordark
     font-size: 24pt
@@ -76,7 +76,7 @@ body
     background: #fff
     position: relative
     display: none
-    +v-gradient(!colorlight, !colortheme)    
+    +v-gradient(!colorlight, !colortheme)
 
 =iphone-top-button
     position: absolute
@@ -89,7 +89,7 @@ body
     +iphone-top-button
     left: auto
     right: 5px
-    
+
 =iphone-left-button
     +iphone-top-button
     left: 5px
@@ -98,7 +98,7 @@ body
 =iphone-button(!color = !colortheme)
     +fancy-button(!color)
 
- 
+
 =iphone-back-button(!imagebase=!images+ /back_button, !pixels="0 4 0 11")
     -webkit-mask-box-image= url(!imagebase+"_mask.png") !pixels repeat stretch
     -webkit-border-image= url(!imagebase+".png") !pixels repeat stretch
@@ -121,7 +121,7 @@ body
     &:active
         -webkit-border-image= url(!imagebase+"_active.png") !pixels repeat stretch
     -webkit-user-select: none
-        
+
 =iphone-forward-button
     +iphone-back-button(!images + /forward_button, "0 11 0 4")
     border-width: 0 11px 0 4px
@@ -131,7 +131,7 @@ body
     padding: 0
     background: white
     font: bold 17px Helvetica
-    
+
 =iphone-list-item
     border-top: 1px solid #B4B4B4
     padding: 10px 10px 10px 10px
@@ -145,4 +145,3 @@ body
     text-shadow: rgba(255, 255, 255, 0.5) 0 1px 1px, rgba(0,0,0, 0.5) 0 -1px 1px
     margin: auto auto
     text-align: center
-    
